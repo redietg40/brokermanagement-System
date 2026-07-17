@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews - FindBroker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Animation styles for moving images */
+      
+    </style>
+</head>
+<body>
+    <!-- Animation container for moving images -->
+
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <h1 class="logo">FindBroker</h1>
+                <span class="logo-tagline">Trusted Connections</span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="browse.html" class="nav-link">Browse</a>
+                <a href="categories.html" class="nav-link">Categories</a>
+                <a href="reviews.html" class="nav-link active">Reviews</a>
+                <a href="about.html" class="nav-link">About</a>
+                <div class="nav-buttons">
+                    <button class="btn btn-outline" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="btn btn-primary" onclick="showRegisterModal()">
+                        <i class="fas fa-user-plus"></i> Register as Broker
+                    </button>
+                </div>
+            </nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Reviews Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header-center">
+                <h2 class="section-title">Customer Reviews</h2>
+                <p class="section-subtitle">Real experiences from satisfied customers</p>
+            </div>
+            <div class="testimonials-slider" id="testimonialsSlider">
+                <!-- Testimonials container will be populated by JavaScript -->
+            </div>
+            <div class="slider-controls">
+                <button class="slider-btn prev" onclick="previousTestimonial()" aria-label="Previous testimonial">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="slider-dots" id="sliderDots">
+                    <!-- Navigation dots will be populated by JavaScript -->
+                </div>
+                <button class="slider-btn next" onclick="nextTestimonial()" aria-label="Next testimonial">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+   
+   
+</body>
+</html>

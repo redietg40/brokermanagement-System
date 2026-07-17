@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - FindBroker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">FindBroker</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#browse">Browse</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button id="themeToggle" class="btn btn-secondary theme-toggle" title="Toggle theme">🌙</button>
+                <a href="#" class="btn btn-secondary" onclick="openModal('loginModal')">Login</a>
+                <a href="#" class="btn btn-primary" onclick="openModal('registerModal')">Register as Broker</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contact Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>Get in touch with our team. We're here to help you connect with the right brokers.</p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="features">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-grid">
+                    <!-- Contact Form -->
+                    <div class="contact-form-section">
+                        <h2>Send us a Message</h2>
+                        <form id="contactPageForm" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contactName">Full Name *</label>
+                                    <input type="text" id="contactName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactEmail">Email Address *</label>
+                                    <input type="email" id="contactEmail" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contactPhone">Phone Number</label>
+                                    <input type="tel" id="contactPhone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactSubject">Subject *</label>
+                                    <select id="contactSubject" required>
+                                        <option value="">Select a subject</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="broker-support">Broker Support</option>
+                                        <option value="customer-support">Customer Support</option>
+                                        <option value="technical">Technical Issue</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="feedback">Feedback</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage">Message *</label>
+                                <textarea id="contactMessage" rows="6" placeholder="Please describe your inquiry in detail..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="contact-info-section">
+                        <h2>Get in Touch</h2>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div class="contact-details">
+                                    <h3>Office Address</h3>
+                                    <p>123 Business District<br>
+                                    Addis Ababa, Ethiopia<br>
+                                    P.O. Box 12345</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-details">
+                                    <h3>Phone Numbers</h3>
+                                    <p>Main: +251-11-123-4567<br>
+                                    Support: +251-11-123-4568<br>
+                                    Emergency: +251-911-123-456</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">✉️</div>
+                                <div class="contact-details">
+                                    <h3>Email Addresses</h3>
+                                    <p>General: info@findbroker.com<br>
+                                    Support: support@findbroker.com<br>
+                                    Partnerships: partners@findbroker.com</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🕒</div>
+                                <div class="contact-details">
+                                    <h3>Business Hours</h3>
+                                    <p>Monday - Friday: 8:00 AM - 6:00 PM<br>
+                                    Saturday: 9:00 AM - 4:00 PM<br>
+                                    Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <h3>Follow Us</h3>
+                            <div class="social-buttons">
+                                <a href="#" class="social-btn">Facebook</a>
+                                <a href="#" class="social-btn">Twitter</a>
+                                <a href="#" class="social-btn">LinkedIn</a>
+                                <a href="#" class="social-btn">Instagram</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <h3>How do I find a broker?</h3>
+                            <p>Use our search feature on the homepage to filter brokers by category, location, and keywords. All listed brokers are verified and licensed.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>Is there a fee to use FindBroker?</h3>
+                            <p>No, our platform is completely free for customers. You only pay the broker directly for their services.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>How are brokers verified?</h3>
+                            <p>We conduct thorough background checks, verify licenses, and review professional credentials before approving any broker.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>Can I become a broker on your platform?</h3>
+                            <p>Yes! Click "Register as Broker" to start the application process. We'll guide you through our verification requirements.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>What if I have issues with a broker?</h3>
+                            <p>Contact our support team immediately. We take all complaints seriously and will investigate any issues promptly.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>How quickly will you respond to my inquiry?</h3>
+                            <p>We aim to respond to all inquiries within 24 hours during business days, and within 48 hours on weekends.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FindBroker</h3>
+                    <p>Connecting verified brokers with customers for safe and trusted transactions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>For Customers</h3>
+                    <ul>
+                        <li><a href="index.html#browse">Browse Brokers</a></li>
+                        <li><a href="#">Search by Category</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Brokers</h3>
+                    <ul>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">Verification Process</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FindBroker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="userType" value="customer" checked> Customer
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="broker"> Broker
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="admin"> Admin
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Register as Broker</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="brokerName">Full Name:</label>
+                    <input type="text" id="brokerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerEmail">Email:</label>
+                    <input type="email" id="brokerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerPhone">Phone:</label>
+                    <input type="tel" id="brokerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerCategory">Category:</label>
+                    <select id="brokerCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="finance">Finance</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="technology">Technology</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brokerLocation">Location:</label>
+                    <select id="brokerLocation" required>
+                        <option value="">Select Location</option>
+                        <option value="addis-ababa">Addis Ababa</option>
+                        <option value="dire-dawa">Dire Dawa</option>
+                        <option value="bahir-dar">Bahir Dar</option>
+                        <option value="hawassa">Hawassa</option>
+                        <option value="mekelle">Mekelle</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brokerLicense">License Number:</label>
+                    <input type="text" id="brokerLicense" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerDescription">Description:</label>
+                    <textarea id="brokerDescription" rows="4" placeholder="Describe your services..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script3.js"></script>
+</body>
+</html>

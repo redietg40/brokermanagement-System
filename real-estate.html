@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindBroker - Real Estate Listings</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="real-estate.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- FindBroker Header -->
+    <header class="header">
+      <div class="container">
+        <div class="nav-brand">
+          <div class="logo">FindBroker</div>
+          <div class="logo-tagline">Trusted Marketplace</div>
+        </div>
+        
+        <nav class="nav-menu" id="navMenu">
+          <a href="index.html#home" class="nav-link">Home</a>
+          <a href="real-estate.html" class="nav-link active">Real Estate</a>
+          <a href="browse.html" class="nav-link">Browse</a>
+          <a href="index.html#services" class="nav-link">Services</a>
+          <a href="index.html#about" class="nav-link">About</a>
+          <a href="categories.html" class="nav-link">Categories</a>
+        </nav>
+        
+        <div class="nav-buttons">
+          <!-- Populated dynamically by JavaScript -->
+        </div>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="main" style="margin-top: 100px;">
+      <!-- Hero Header Section -->
+      <section class="real-estate-hero">
+        <div class="container hero-content">
+          <h1 class="hero-title">Real Estate Properties</h1>
+          <p class="hero-subtitle">Find your perfect home in Ethiopia's most desirable locations through verified brokers</p>
+        </div>
+      </section>
+
+      <!-- Advanced Filtering Section -->
+      <section class="filters-section" style="padding: 40px 0; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
+        <div class="container">
+          <div class="property-filters" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 16px;">
+            <div class="filter-group">
+              <label for="typeFilter">Property Type</label>
+              <select id="typeFilter">
+                <option value="">All Types</option>
+                <option value="villa">Villa</option>
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+                <option value="commercial">Commercial</option>
+                <option value="land">Land</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="locationFilter">Location</label>
+              <select id="locationFilter">
+                <option value="">All Locations</option>
+                <option value="addis-ababa">Addis Ababa</option>
+                <option value="bahir-dar">Bahir Dar</option>
+                <option value="hawassa">Hawassa</option>
+                <option value="mekelle">Mekelle</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="priceFilter">Price Range</label>
+              <select id="priceFilter">
+                <option value="">All Prices</option>
+                <option value="0-10000000">Under 10M ETB</option>
+                <option value="10000000-25000000">10M - 25M ETB</option>
+                <option value="25000000-50000000">25M - 50M ETB</option>
+                <option value="50000000-999999999">Above 50M ETB</option>
+              </select>
+            </div>
+            <div class="filter-group" style="grid-column: span 2;">
+              <label for="keywordSearch">Keyword Search</label>
+              <div style="position: relative;">
+                <input type="text" id="keywordSearch" placeholder="Search by title, location, description, or broker name..." style="width: 100%; padding: 0.75rem 1.5rem 0.75rem 2.5rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #64748b;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Properties Section -->
+      <section class="properties-section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Available Listings</h2>
+            <div class="view-controls">
+              <button class="view-btn active" id="gridViewBtn" onclick="setViewMode('grid')">
+                <i class="fas fa-th-large"></i>
+              </button>
+              <button class="view-btn" id="listViewBtn" onclick="setViewMode('list')">
+                <i class="fas fa-list"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="properties-grid" id="propertiesGrid">
+            <!-- Property cards populated dynamically by JavaScript -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Property Details Modal -->
+    <div id="propertyModal" class="modal">
+      <div class="modal-content" style="max-width: 900px; padding: 0; border-radius: 20px; overflow: hidden;">
+        <div class="modal-header" style="position: absolute; right: 1.5rem; top: 1.5rem; border: none; z-index: 10; padding: 0;">
+          <button class="close-btn" onclick="closeModal()" style="background: rgba(255,255,255,0.85); width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">&times;</button>
+        </div>
+        <div id="modalContent">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Modal (for homepage/navbar compatibility) -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content" style="padding: 2rem;">
+        <div class="modal-header">
+          <h3>Welcome Back</h3>
+          <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+        </div>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal (for homepage/navbar compatibility) -->
+    <div class="modal" id="registerModal">
+      <div class="modal-content" style="padding: 2rem; max-width: 550px;">
+        <div class="modal-header">
+          <h3>Join FindBroker</h3>
+          <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
+        </div>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-row" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <div class="form-group" style="flex: 1;">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="registerEmail">Email Address</label>
+            <input type="email" id="registerEmail" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+          </div>
+          <div class="form-row" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <div class="form-group" style="flex: 1;">
+              <label for="registerPassword">Password</label>
+              <input type="password" id="registerPassword" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="userType">Account Type</label>
+            <select id="userType" onchange="toggleBrokerFields()" required style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px; background:white;">
+              <option value="">Select account type</option>
+              <option value="buyer">Buyer (User)</option>
+              <option value="broker">Broker</option>
+            </select>
+          </div>
+          <div id="brokerFields" style="display: none; border-left: 3px solid var(--primary-color); padding-left: 10px; margin-bottom: 1rem;">
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+              <label for="brokerLicense">License / Certificate Number</label>
+              <input type="text" id="brokerLicense" placeholder="e.g. ET-RE-999" style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+              <label for="brokerCity">City / Region of Operation</label>
+              <input type="text" id="brokerCity" placeholder="e.g. Addis Ababa" style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+              <label for="brokerBio">Short Business Bio</label>
+              <textarea id="brokerBio" rows="3" placeholder="Describe your real estate services..." style="width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:8px;"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer" style="background: #1e293b; color: white; padding: 40px 0; text-align: center; margin-top: 80px;">
+      <div class="container">
+        <p>&copy; 2026 FindBroker Real Estate. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="db.js"></script>
+    <script src="real-estate.js"></script>
+  </body>
+</html>

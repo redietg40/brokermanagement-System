@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindBroker - Administration Panel</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin-panel.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+
+    <!-- Admin Login Overlay -->
+    <div id="adminLoginScreen" class="admin-login-overlay">
+      <div class="login-card">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.75rem; font-weight: 800; color: #1e293b; margin-bottom: 0.25rem;">FindBroker Admin</h2>
+          <p style="color: #64748b; font-size: 0.9rem;">Sign in to administrative console</p>
+        </div>
+        
+        <form onsubmit="handleAdminLogin(event)">
+          <div class="form-group">
+            <label for="adminEmail">Email Address</label>
+            <input type="email" id="adminEmail" required placeholder="admin@findbroker.com" />
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" required placeholder="••••••••" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" style="padding: 0.75rem; font-size: 0.95rem; margin-top: 1rem;">
+            Authenticate Admin
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Control Panel Layout -->
+    <div id="adminDashboardLayout" class="admin-layout" style="display: none;">
+      
+      <!-- Left Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="logo">FindBroker</div>
+          <span class="logo-badge">Admin Panel</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <button class="nav-item active" onclick="switchTab('pending')">
+            <i class="fas fa-user-shield"></i> Pending Approvals
+            <span class="badge-count" id="badgePendingCount" style="margin-left:auto; background:#f59e0b; color:white; padding:2px 8px; border-radius:10px; font-size:0.75rem;">0</span>
+          </button>
+          <button class="nav-item" onclick="switchTab('brokers')">
+            <i class="fas fa-users"></i> All Brokers
+          </button>
+          <button class="nav-item" onclick="switchTab('listings')">
+            <i class="fas fa-home"></i> All Listings
+          </button>
+          <hr style="border-color: rgba(255,255,255,0.08); margin: 1rem 0;" />
+          <button class="nav-item logout-btn" onclick="handleAdminLogout()">
+            <i class="fas fa-sign-out-alt"></i> Exit Session
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Main Contents -->
+      <main class="main-content">
+        <header class="dashboard-header">
+          <h2 id="tabTitle">Pending Broker Approvals</h2>
+        </header>
+
+        <!-- Stats Overview Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper orange"><i class="fas fa-clock"></i></div>
+            <div class="stat-data">
+              <h3 id="statPendingBrokers">0</h3>
+              <p>Pending Verification</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper green"><i class="fas fa-user-check"></i></div>
+            <div class="stat-data">
+              <h3 id="statApprovedBrokers">0</h3>
+              <p>Verified Brokers</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper blue"><i class="fas fa-store"></i></div>
+            <div class="stat-data">
+              <h3 id="statTotalListings">0</h3>
+              <p>Total Property Listings</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content: Pending Approvals -->
+        <section id="tab-pending" class="tab-panel active" style="margin-top: 2rem;">
+          <div class="dashboard-card">
+            <h3>Broker License Verification Requests</h3>
+            <p style="color:#64748b; margin-bottom:1.5rem; font-size:0.9rem;">Review broker registration details and verify license authenticity to grant posting access.</p>
+            
+            <table class="data-table" id="pendingBrokersTable">
+              <thead>
+                <tr>
+                  <th>Broker Info</th>
+                  <th>License Code</th>
+                  <th>City / Operation</th>
+                  <th>Description / Bio</th>
+                  <th>Action Approval</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tab Content: All Brokers -->
+        <section id="tab-brokers" class="tab-panel" style="margin-top: 2rem;">
+          <div class="dashboard-card">
+            <h3>Registered Broker Registry</h3>
+            <table class="data-table" id="allBrokersTable">
+              <thead>
+                <tr>
+                  <th>Broker</th>
+                  <th>License Code</th>
+                  <th>City</th>
+                  <th>Registered</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tab Content: All Listings -->
+        <section id="tab-listings" class="tab-panel" style="margin-top: 2rem;">
+          <div class="dashboard-card">
+            <h3>Global Property Listing Registry</h3>
+            <table class="data-table" id="allListingsTable">
+              <thead>
+                <tr>
+                  <th>Property Details</th>
+                  <th>Broker Account</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+    <!-- Notification Alert -->
+    <div id="notification" class="notification"></div>
+
+    <script src="db.js"></script>
+    <script src="admin-panel.js"></script>
+  </body>
+</html>

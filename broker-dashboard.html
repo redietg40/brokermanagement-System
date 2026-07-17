@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindBroker - Broker Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="broker-dashboard.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="logo">FindBroker</div>
+          <span class="logo-badge">Broker Space</span>
+        </div>
+        
+        <div class="sidebar-user">
+          <img src="images/broker-image-removebg-preview.png" alt="Broker Avatar" class="user-avatar" />
+          <div class="user-info">
+            <h4 id="brokerSessionName">Broker Name</h4>
+            <span class="verification-badge"><i class="fas fa-check-circle"></i> Approved Broker</span>
+          </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <button class="nav-item active" onclick="switchTab('overview')">
+            <i class="fas fa-chart-line"></i> Overview
+          </button>
+          <button class="nav-item" onclick="switchTab('listings')">
+            <i class="fas fa-home"></i> My Listings
+          </button>
+          <button class="nav-item" onclick="switchTab('add-listing')">
+            <i class="fas fa-plus-circle"></i> Add Listing
+          </button>
+          <button class="nav-item" onclick="switchTab('profile')">
+            <i class="fas fa-user-cog"></i> Profile Settings
+          </button>
+          <hr style="border-color: rgba(255,255,255,0.08); margin: 1rem 0;" />
+          <button class="nav-item logout-btn" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+          </button>
+        </nav>
+      </aside>
+      
+      <!-- Main Content Area -->
+      <main class="main-content">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+          <h2 id="tabTitle">Dashboard Overview</h2>
+          <div class="header-actions">
+            <a href="real-estate.html" target="_blank" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+              <i class="fas fa-external-link-alt"></i> View Public Site
+            </a>
+          </div>
+        </header>
+        
+        <!-- Tab Content: Overview -->
+        <section id="tab-overview" class="tab-panel active">
+          <!-- Overview Stats -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper blue"><i class="fas fa-home"></i></div>
+              <div class="stat-data">
+                <h3 id="statTotalListings">0</h3>
+                <p>Total Listings</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper green"><i class="fas fa-eye"></i></div>
+              <div class="stat-data">
+                <h3 id="statTotalViews">0</h3>
+                <p>Accumulated Views</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper orange"><i class="fas fa-shopping-bag"></i></div>
+              <div class="stat-data">
+                <h3 id="statProductiveSales">0</h3>
+                <p>Productive Sales</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper purple"><i class="fas fa-star"></i></div>
+              <div class="stat-data">
+                <h3 id="statRating">4.8</h3>
+                <p>Broker Rating</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Listings Container -->
+          <div class="dashboard-card" style="margin-top: 2rem;">
+            <div class="card-header">
+              <h3>Recent Listing Activities</h3>
+              <button class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;" onclick="switchTab('listings')">See All</button>
+            </div>
+            <table class="data-table" id="recentListingsTable">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Views</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
+        <!-- Tab Content: My Listings -->
+        <section id="tab-listings" class="tab-panel">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3>Manage Your Properties</h3>
+              <button class="btn btn-primary" onclick="switchTab('add-listing')"><i class="fas fa-plus"></i> Add Property</button>
+            </div>
+            <table class="data-table" id="allListingsTable">
+              <thead>
+                <tr>
+                  <th>Property Details</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Price</th>
+                  <th>Visibility</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+        
+        <!-- Tab Content: Add / Edit Listing -->
+        <section id="tab-add-listing" class="tab-panel">
+          <div class="dashboard-card">
+            <h3 id="listingFormTitle" style="font-size: 1.4rem; margin-bottom: 1.5rem; color: #1e293b;">Post a New Property Listing</h3>
+            
+            <form id="listingForm" onsubmit="submitListing(event)">
+              <input type="hidden" id="editListingId" value="" />
+              
+              <div class="form-group">
+                <label for="listingTitle">Property Title</label>
+                <input type="text" id="listingTitle" required placeholder="e.g. Luxurious 4-Bedroom Villa in Bole" />
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="listingType">Property Type</label>
+                  <select id="listingType" required>
+                    <option value="villa">Villa</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="land">Land</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="listingSaleStatus">Listing Status</label>
+                  <select id="listingSaleStatus" required>
+                    <option value="for-sale">For Sale</option>
+                    <option value="for-rent">For Rent</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="listingLocation">Region / Location</label>
+                  <select id="listingLocation" required>
+                    <option value="addis-ababa">Addis Ababa</option>
+                    <option value="bahir-dar">Bahir Dar</option>
+                    <option value="hawassa">Hawassa</option>
+                    <option value="mekelle">Mekelle</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="listingLocationLabel">Detailed Address / Neighborhood</label>
+                  <input type="text" id="listingLocationLabel" required placeholder="e.g. Bole Atlas, Addis Ababa" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="listingPrice">Price (ETB)</label>
+                  <input type="number" id="listingPrice" required placeholder="e.g. 25000000" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="listingArea">Area size (m²)</label>
+                  <input type="number" id="listingArea" required placeholder="e.g. 350" />
+                </div>
+              </div>
+              
+              <div class="form-row spec-inputs">
+                <div class="form-group">
+                  <label for="listingBedrooms">Bedrooms</label>
+                  <input type="number" id="listingBedrooms" value="0" placeholder="0" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="listingBathrooms">Bathrooms</label>
+                  <input type="number" id="listingBathrooms" value="0" placeholder="0" />
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="listingDescription">Detailed Description</label>
+                <textarea id="listingDescription" rows="5" required placeholder="Describe the property highlights, safety features, environment, facilities..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label>Property Images (Upload up to 3 images, JPEG/PNG)</label>
+                <div class="image-upload-wrapper">
+                  <input type="file" id="listingImages" multiple accept="image/*" onchange="previewImages()" />
+                  <div class="image-preview-container" id="imagePreviewContainer">
+                    <span class="placeholder-text">No images selected yet.</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="display:flex; gap:1rem; margin-top:2rem;">
+                <button type="submit" class="btn btn-primary" style="flex:2;" id="submitBtn">Post Property</button>
+                <button type="button" class="btn btn-outline" style="flex:1;" onclick="cancelListingEdit()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        
+        <!-- Tab Content: Profile Settings -->
+        <section id="tab-profile" class="tab-panel">
+          <div class="dashboard-card">
+            <h3>Profile Settings</h3>
+            <p style="color:#64748b; margin-bottom:2rem;">Modify your professional broker profile details.</p>
+            
+            <form id="profileForm" onsubmit="submitProfile(event)">
+              <div class="form-group">
+                <label for="profileName">Full Broker Name</label>
+                <input type="text" id="profileName" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="profilePhone">Contact Phone Number</label>
+                <input type="tel" id="profilePhone" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="profileCity">City / Region of Operation</label>
+                <input type="text" id="profileCity" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="profileSales">Productive Sales Count</label>
+                <input type="number" id="profileSales" min="0" required placeholder="Enter number of completed broker sales" />
+                <small style="color: #64748b; display: block; margin-top: 4px;">Update your total successful property sales displayed to buyers.</small>
+              </div>
+              
+              <div class="form-group">
+                <label for="profileBio">Professional Bio</label>
+                <textarea id="profileBio" rows="4"></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Save Changes</button>
+            </form>
+          </div>
+        </section>
+        
+      </main>
+      
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+
+    <script src="db.js"></script>
+    <script src="broker-dashboard.js"></script>
+  </body>
+</html>

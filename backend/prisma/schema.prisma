@@ -1,0 +1,64 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  favorites    String[] // Scalar list mapped to PostgreSQL text[]
+  registeredAt DateTime @default(now())
+}
+
+model Broker {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  phone           String
+  passwordHash    String
+  licenseNumber   String
+  city            String
+  bio             String
+  status          String    @default("pending") // pending, approved, rejected
+  rating          Float     @default(0.0)
+  totalSales      Int       @default(0)
+  avatar          String?
+  registeredAt    DateTime  @default(now())
+  approvedAt      DateTime?
+  rejectionReason String?
+  listings        Listing[]
+}
+
+model Admin {
+  id           String @id @default(uuid())
+  name         String
+  email        String @unique
+  passwordHash String
+}
+
+model Listing {
+  id            String   @id @default(uuid())
+  title         String
+  type          String
+  location      String
+  locationLabel String
+  price         Float
+  bedrooms      Int      @default(0)
+  bathrooms     Int      @default(0)
+  area          Float    @default(0)
+  description   String
+  saleStatus    String   @default("for-sale") // for-sale, for-rent
+  images        String[]
+  active        Boolean  @default(true)
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
+  brokerId      String
+  broker        Broker   @relation(fields: [brokerId], references: [id], onDelete: Cascade)
+}

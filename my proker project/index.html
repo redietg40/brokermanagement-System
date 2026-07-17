@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindBroker - Connect with Verified Brokers</title>
+    <!-- replaced inline styles with external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">FindBroker</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#browse">Browse</a></li>
+                <!-- updated About link to point to separate page -->
+                <li><a href="about.html">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <!-- added theme toggle button -->
+                <button id="themeToggle" class="btn btn-secondary theme-toggle" title="Toggle theme">🌙</button>
+                <a href="#" class="btn btn-secondary" onclick="openModal('loginModal')">Login</a>
+                <a href="#" class="btn btn-primary" onclick="openModal('registerModal')">Register as Broker</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Connect with Verified Brokers</h1>
+            <p>Find trusted, licensed brokers for all your product and service needs. Safe, secure, and reliable connections.</p>
+            <div class="hero-buttons">
+                <a href="#browse" class="btn btn-primary">Browse Brokers</a>
+                <a href="#" class="btn btn-secondary" onclick="openModal('registerModal')">Become a Broker</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose FindBroker?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3>Verified Brokers</h3>
+                    <p>All brokers are thoroughly verified and licensed to ensure your safety and trust.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Easy Search</h3>
+                    <p>Find brokers by category, location, and keywords with our advanced search system.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Direct Communication</h3>
+                    <p>Contact brokers directly through email, phone, or our inquiry system.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access the platform from any device with our responsive design.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="browse">
+        <div class="container">
+            <div class="search-container">
+                <h2>Find Your Perfect Broker</h2>
+                <div class="search-form">
+                    <input type="text" class="search-input" placeholder="Search for products or services..." id="searchInput">
+                    <button class="btn btn-primary" onclick="searchBrokers()">Search</button>
+                </div>
+                <div class="filters">
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="finance">Finance</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="technology">Technology</option>
+                    </select>
+                    <select class="filter-select" id="locationFilter">
+                        <option value="">All Locations</option>
+                        <option value="addis-ababa">Addis Ababa</option>
+                        <option value="dire-dawa">Dire Dawa</option>
+                        <option value="bahir-dar">Bahir Dar</option>
+                        <option value="hawassa">Hawassa</option>
+                        <option value="mekelle">Mekelle</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Listings Section -->
+    <section class="listings">
+        <div class="container">
+            <h2>Featured Brokers</h2>
+            <div class="listings-grid" id="listingsGrid">
+                <!-- Listings will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FindBroker</h3>
+                    <p>Connecting verified brokers with customers for safe and trusted transactions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>For Customers</h3>
+                    <ul>
+                        <li><a href="#">Browse Brokers</a></li>
+                        <li><a href="#">Search by Category</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Brokers</h3>
+                    <ul>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">Verification Process</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FindBroker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="userType" value="customer" checked> Customer
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="broker"> Broker
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="admin"> Admin
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Register as Broker</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="brokerName">Full Name:</label>
+                    <input type="text" id="brokerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerEmail">Email:</label>
+                    <input type="email" id="brokerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerPhone">Phone:</label>
+                    <input type="tel" id="brokerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerCategory">Category:</label>
+                    <select id="brokerCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="finance">Finance</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="technology">Technology</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brokerLocation">Location:</label>
+                    <select id="brokerLocation" required>
+                        <option value="">Select Location</option>
+                        <option value="addis-ababa">Addis Ababa</option>
+                        <option value="dire-dawa">Dire Dawa</option>
+                        <option value="bahir-dar">Bahir Dar</option>
+                        <option value="hawassa">Hawassa</option>
+                        <option value="mekelle">Mekelle</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brokerLicense">License Number:</label>
+                    <input type="text" id="brokerLicense" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerDescription">Description:</label>
+                    <textarea id="brokerDescription" rows="4" placeholder="Describe your services..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2>Contact Broker</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="customerName">Your Name:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Your Email:</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Your Phone:</label>
+                    <input type="tel" id="customerPhone">
+                </div>
+                <div class="form-group">
+                    <label for="inquiryMessage">Message:</label>
+                    <textarea id="inquiryMessage" rows="4" placeholder="Describe what you're looking for..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- replaced inline JavaScript with external JS file -->
+    <script src="script3.js"></script>
+</body>
+</html>

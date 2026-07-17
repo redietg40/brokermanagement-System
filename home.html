@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Portfolio - FindBroker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="broker-portfolio.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header 
+
+    <!-- Broker Profile Hero -->
+    <section class="broker-hero">
+        <div class="container">
+            <div class="broker-profile-card">
+                <div class="broker-avatar">
+                    <img id="brokerAvatar" src="https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Broker Photo">
+                    <div class="verification-badge">
+                        <i class="fas fa-check-circle"></i>
+                        Verified
+                    </div>
+                </div>
+                <div class="broker-info">
+                    <h1 id="brokerName" class="broker-name">Sarah Johnson</h1>
+                    <p id="brokerTitle" class="broker-title">Senior Real Estate Broker</p>
+                    <div class="broker-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="brokerExperience">8</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="brokerListings">45</span>
+                            <span class="stat-label">Active Listings</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="brokerSales">127</span>
+                            <span class="stat-label">Successful Sales</span>
+                        </div>
+                        <div class="stat">
+                            <div class="rating" id="brokerRating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-text">4.9 (89 reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broker-contact-actions">
+                        <button class="btn btn-primary" onclick="showContactModal()">
+                            <i class="fas fa-envelope"></i> Contact Broker
+                        </button>
+                        <button class="btn btn-outline" onclick="callBroker()">
+                            <i class="fas fa-phone"></i> Call Now
+                        </button>
+                        <button class="btn btn-outline" onclick="scheduleMeeting()">
+                            <i class="fas fa-calendar"></i> Schedule Meeting
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Add this inside your broker profile section -->
+<div class="broker-extras">
+  <div class="experience-section">
+    <h3>Experience & Achievements</h3>
+    <ul class="experience-list">
+      <li><i class="fas fa-briefcase"></i> 8+ Years in Real Estate Brokerage</li>
+      <li><i class="fas fa-trophy"></i> Top Broker Award 2023</li>
+      <li><i class="fas fa-users"></i> Helped 120+ families find homes</li>
+      <li><i class="fas fa-certificate"></i> Certified Luxury Property Specialist</li>
+    </ul>
+  </div>
+  <div class="recognition-section">
+    <h3>Recognition</h3>
+    <p>Featured in <strong>Addis Real Estate Magazine</strong> and <strong>Capital Ethiopia</strong> for outstanding service and market expertise.</p>
+    <div class="recognition-images">
+      <img src="https://images.pexels.com/photos/1068523/pexels-photo-1068523.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop" alt="Broker Award" />
+      <img src="https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop" alt="Magazine Feature" />
+    </div>
+  </div>
+</div>
+        </div>
+    </section>
+
+    <!-- Broker Details -->
+    <section class="broker-details">
+        <div class="container">
+            <div class="details-grid">
+                <div class="details-main">
+                    <!-- About Section -->
+                    <div class="detail-section">
+                        <h3>About Me</h3>
+                        <p id="brokerBio">
+                            With over 8 years of experience in the Ethiopian real estate market, I specialize in luxury residential properties and commercial spaces in Addis Ababa. My commitment to excellence and personalized service has helped over 127 families find their dream homes and businesses secure prime locations.
+                        </p>
+                        <div class="specializations">
+                            <h4>Specializations</h4>
+                            <div class="specialization-tags" id="brokerSpecializations">
+                                <span class="tag">Luxury Homes</span>
+                                <span class="tag">Commercial Properties</span>
+                                <span class="tag">Investment Properties</span>
+                                <span class="tag">First-Time Buyers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Listings -->
+                    <div class="detail-section">
+                        <h3>My Active Listings</h3>
+                        <div class="broker-listings-grid" id="brokerListingsGrid">
+                            <!-- Listings will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Reviews -->
+                    <div class="detail-section">
+                        <h3>Client Reviews</h3>
+                        <div class="reviews-container" id="brokerReviews">
+                            <!-- Reviews will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Market Insights -->
+                    <div class="detail-section">
+                        <div class="market-insights">
+                            <h3><i class="fas fa-chart-line"></i> Market Insights & Performance</h3>
+                            <p>Stay informed with my latest market analysis and performance metrics in the Ethiopian real estate sector.</p>
+                            <div class="insights-grid">
+                                <div class="insight-card">
+                                    <span class="insight-number">15%</span>
+                                    <span class="insight-label">Average Price Growth</span>
+                                </div>
+                                <div class="insight-card">
+                                    <span class="insight-number">28 Days</span>
+                                    <span class="insight-label">Average Sale Time</span>
+                                </div>
+                                <div class="insight-card">
+                                    <span class="insight-number">98%</span>
+                                    <span class="insight-label">List-to-Sale Ratio</span>
+                                </div>
+                                <div class="insight-card">
+                                    <span class="insight-number">$2.1M</span>
+                                    <span class="insight-label">Total Sales Volume</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professional Timeline -->
+                    <div class="detail-section">
+                        <h3>Professional Journey</h3>
+                        <div class="timeline-section">
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-year">2024</div>
+                                    <div class="timeline-title">Top Broker Award Winner</div>
+                                    <div class="timeline-description">Recognized as the top-performing broker in Addis Ababa with over $2M in sales volume and 98% client satisfaction rate.</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-year">2022</div>
+                                    <div class="timeline-title">Luxury Property Specialist Certification</div>
+                                    <div class="timeline-description">Completed advanced certification in luxury property sales and investment advisory services.</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-year">2020</div>
+                                    <div class="timeline-title">Founded Premium Properties Team</div>
+                                    <div class="timeline-description">Established a dedicated team of 5 professionals specializing in high-end residential and commercial properties.</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-year">2016</div>
+                                    <div class="timeline-title">Started Real Estate Career</div>
+                                    <div class="timeline-description">Began career in real estate with a focus on helping first-time homebuyers in the Addis Ababa market.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Testimonials -->
+                    <div class="detail-section">
+                        <h3>Video Testimonials</h3>
+                        <div class="video-testimonials">
+                            <div class="video-testimonial">
+                                <div class="video-thumbnail" onclick="playTestimonial(1)">
+                                    <div class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                                <div class="video-info">
+                                    <div class="video-client">Michael & Almaz Tadesse</div>
+                                    <div class="video-preview">"Sarah helped us find our dream home in Bole. Her professionalism and dedication made the entire process seamless..."</div>
+                                </div>
+                            </div>
+                            <div class="video-testimonial">
+                                <div class="video-thumbnail" onclick="playTestimonial(2)">
+                                    <div class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                                <div class="video-info">
+                                    <div class="video-client">David Wilson</div>
+                                    <div class="video-preview">"As an international investor, Sarah's market knowledge and transparency gave me confidence in my Ethiopian property investments..."</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Awards and Recognition -->
+                    <div class="detail-section">
+                        <h3>Awards & Recognition</h3>
+                        <div class="awards-grid">
+                            <div class="award-card">
+                                <div class="award-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="award-title">Top Broker of the Year</div>
+                                <div class="award-year">2024</div>
+                            </div>
+                            <div class="award-card">
+                                <div class="award-icon">
+                                    <i class="fas fa-medal"></i>
+                                </div>
+                                <div class="award-title">Excellence in Customer Service</div>
+                                <div class="award-year">2023</div>
+                            </div>
+                            <div class="award-card">
+                                <div class="award-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="award-title">Rising Star Award</div>
+                                <div class="award-year">2022</div>
+                            </div>
+                            <div class="award-card">
+                                <div class="award-icon">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div class="award-title">Community Impact Award</div>
+                                <div class="award-year">2021</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-sidebar">
+                    <!-- Contact Information -->
+                    <div class="sidebar-card">
+                        <h4>Contact Information</h4>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span id="brokerPhone">+251-911-234567</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span id="brokerEmail">sarah.johnson@findbroker.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="brokerLocation">Bole, Addis Ababa</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-building"></i>
+                                <span id="brokerCompany">Premium Properties Ethiopia</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="sidebar-card">
+                        <h4>Certifications & Licenses</h4>
+                        <div class="certifications" id="brokerCertifications">
+                            <div class="cert-item">
+                                <i class="fas fa-certificate"></i>
+                                <span>Licensed Real Estate Broker</span>
+                            </div>
+                            <div class="cert-item">
+                                <i class="fas fa-award"></i>
+                                <span>Top Performer 2023</span>
+                            </div>
+                            <div class="cert-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Verified by FindBroker</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="sidebar-card">
+                        <h4>Performance Stats</h4>
+                        <div class="quick-stats">
+                            <div class="quick-stat">
+                                <span class="stat-label">Response Time</span>
+                                <span class="stat-value">< 2 hours</span>
+                            </div>
+                            <div class="quick-stat">
+                                <span class="stat-label">Success Rate</span>
+                                <span class="stat-value">94%</span>
+                            </div>
+                            <div class="quick-stat">
+                                <span class="stat-label">Client Satisfaction</span>
+                                <span class="stat-value">4.9/5</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Areas -->
+                    <div class="sidebar-card">
+                        <h4>Service Areas</h4>
+                        <div class="service-areas">
+                            <p>I provide comprehensive real estate services across these prime locations in Addis Ababa:</p>
+                            <div class="areas-grid">
+                                <div class="area-tag">Bole</div>
+                                <div class="area-tag">Kazanchis</div>
+                                <div class="area-tag">Piazza</div>
+                                <div class="area-tag">CMC</div>
+                                <div class="area-tag">Old Airport</div>
+                                <div class="area-tag">Sarbet</div>
+                                <div class="area-tag">Megenagna</div>
+                                <div class="area-tag">Ayat</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Languages -->
+                    <div class="sidebar-card">
+                        <h4>Languages</h4>
+                        <div class="certifications">
+                            <div class="cert-item">
+                                <i class="fas fa-globe"></i>
+                                <span>English (Fluent)</span>
+                            </div>
+                            <div class="cert-item">
+                                <i class="fas fa-globe"></i>
+                                <span>Amharic (Native)</span>
+                            </div>
+                            <div class="cert-item">
+                                <i class="fas fa-globe"></i>
+                                <span>Oromo (Conversational)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contact <span id="contactBrokerName">Sarah Johnson</span></h3>
+                <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <form onsubmit="handleContactBroker(event)">
+                <div class="form-group">
+                    <label for="contactName">Your Name</label>
+                    <input type="text" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Your Email</label>
+                    <input type="email" id="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactPhone">Your Phone</label>
+                    <input type="tel" id="contactPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="inquiryType">Inquiry Type</label>
+                    <select id="inquiryType" required>
+                        <option value="">Select inquiry type</option>
+                        <option value="buying">Looking to Buy</option>
+                        <option value="selling">Looking to Sell</option>
+                        <option value="renting">Looking to Rent</option>
+                        <option value="investment">Investment Opportunity</option>
+                        <option value="consultation">General Consultation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" rows="4" placeholder="Tell me about your property needs..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Meeting Modal -->
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule a Meeting</h3>
+                <button class="close-btn" onclick="closeModal('scheduleModal')">&times;</button>
+            </div>
+            <form onsubmit="handleScheduleMeeting(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="meetingDate">Preferred Date</label>
+                        <input type="date" id="meetingDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingTime">Preferred Time</label>
+                        <select id="meetingTime" required>
+                            <option value="">Select time</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="meetingType">Meeting Type</label>
+                    <select id="meetingType" required>
+                        <option value="">Select meeting type</option>
+                        <option value="office">Office Visit</option>
+                        <option value="property">Property Viewing</option>
+                        <option value="video">Video Call</option>
+                        <option value="phone">Phone Call</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="meetingNotes">Additional Notes</label>
+                    <textarea id="meetingNotes" rows="3" placeholder="Any specific requirements or questions..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-calendar-check"></i> Schedule Meeting
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FindBroker</h3>
+                    <p>Your trusted marketplace connecting buyers with verified brokers across Ethiopia.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse Listings</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FindBroker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="broker-portfolio.js"></script>
+</body>
+</html>

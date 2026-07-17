@@ -1,0 +1,638 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindBroker - Your Trusted Marketplace</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <!-- ...existing code... -->
+    <header class="header">
+      <div class="container">
+        <div class="nav-brand">
+          <div class="logo">FindBroker</div>
+          <div class="logo-tagline">Trusted Marketplace</div>
+        </div>
+        <!-- Move the search bar here, outside of <section> and before nav-menu -->
+        <div
+          class="search-container"
+          style="flex: 1; max-width: 500px; margin: 0 2rem; height: 100px"
+        >
+          <div class="search-box" style="box-shadow: none">
+            <div class="search-input-group">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="What are you looking for?"
+              />
+              <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <div class="search-filters">
+              <select id="locationFilter" class="location-select">
+                <option value="">All Locations</option>
+                <option value="addis ababa">Addis Ababa</option>
+                <option value="dire dawa">Dire Dawa</option>
+                <option value="bahir dar">Bahir Dar</option>
+                <option value="hawassa">Hawassa</option>
+                <option value="mekelle">Mekelle</option>
+                <option value="gondar">Gondar</option>
+                <option value="jimma">Jimma</option>
+              </select>
+              <select id="priceRange" class="price-select">
+                <option value="">Any Price</option>
+                <option value="0-1000">Under 1,000 ETB</option>
+                <option value="1000-10000">1,000 - 10,000 ETB</option>
+                <option value="10000-50000">10,000 - 50,000 ETB</option>
+                <option value="50000-100000">50,000 - 100,000 ETB</option>
+                <option value="100000+">100,000+ ETB</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <nav class="nav-menu" id="navMenu">
+          <a href="index.html#home" class="nav-link active">Home</a>
+          <a href="real-estate.html" class="nav-link">Real Estate</a>
+          <a href="browse.html" class="nav-link">Browse</a>
+          <a href="index.html#services" class="nav-link">Services</a>
+          <a href="index.html#about" class="nav-link">About</a>
+          <a href="categories.html" class="nav-link">Categories</a>
+        </nav>
+        <div class="nav-buttons">
+          <button class="btn btn-outline" onclick="showLoginModal()">
+            Login
+          </button>
+          <button class="btn btn-primary" onclick="showRegisterModal()">
+            Sign Up
+          </button>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <!-- Remove the duplicate search-section below header -->
+    <!-- ...existing code... -->
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <div class="hero-badge">
+              <i class="fas fa-shield-alt"></i>
+              Verified & Trusted Platform
+            </div>
+            <h1 class="hero-title">
+              Find Your Perfect <span class="gradient-text">Match</span> Today
+            </h1>
+            <p class="hero-subtitle">
+              Connect with verified brokers and discover amazing opportunities
+              in real estate, automotive, electronics, and more. Your trusted
+              marketplace for quality listings.
+            </p>
+            <div class="hero-cta">
+              <button
+                class="btn btn-primary btn-large"
+                onclick="document.getElementById('browse').scrollIntoView({behavior: 'smooth'})"
+              >
+                <i class="fas fa-search"></i> Start Browsing
+              </button>
+              <button
+                class="btn btn-outline btn-large"
+                onclick="showRegisterModal()"
+              >
+                <i class="fas fa-user-plus"></i> Join as Broker
+              </button>
+            </div>
+          </div>
+          <div class="hero-image">
+            <img
+              src="images/broker-image-removebg-preview.png"
+              alt="Modern marketplace"
+              class="hero-main-image"
+            />
+          </div>
+        </div>
+
+        <!-- Hero Stats -->
+      </div>
+    </section>
+
+    <!-- Advanced Search Section -->
+
+    <!-- Featured Properties Section -->
+    <section class="moving-images-section">
+      <div class="container">
+        <div class="section-header-center">
+          <h2 class="section-title">Premium Properties & Deals</h2>
+          <p class="section-subtitle">
+            Discover handpicked premium listings from our most trusted brokers
+            across Ethiopia
+          </p>
+        </div>
+      </div>
+
+      <div class="moving-images-container" id="movingImagesContainer">
+        <div class="moving-images-track" id="movingImagesTrack">
+          <div class="property-card">
+            <img
+              src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Luxury Villa"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Luxury Villa in Bole</div>
+              <div class="property-price">2,500,000 ETB</div>
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="images1/automative.avif"
+              alt="Modern Apartment"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Modern Apartment</div>
+              <div class="property-price">850,000 ETB</div>
+              ]
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="images1/agriculture2.webp"
+              alt="Commercial Space"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Prime Commercial Space</div>
+              <div class="property-price">1,200,000 ETB</div>
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Family Home"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Spacious Family Home</div>
+              <div class="property-price">1,800,000 ETB</div>
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="images1/agirculture1.webp"
+              alt="Penthouse"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Downtown Penthouse</div>
+              <div class="property-price">3,200,000 ETB</div>
+              \
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="images1/fashion1.webp"
+              alt="Office Building"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Modern Office Building</div>
+              <div class="property-price">5,500,000 ETB</div>
+            </div>
+          </div>
+
+          <!-- Duplicate for seamless loop -->
+          <div class="property-card">
+            <img
+              src="images1/food3.webp"
+              alt="Luxury Villa"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Luxury Villa in Bole</div>
+              <div class="property-price">2,500,000 ETB</div>
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="images1/food4 - Copy.avif"
+              alt="Modern Apartment"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Modern Apartment</div>
+              <div class="property-price">850,000 ETB</div>
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Commercial Space"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Prime Commercial Space</div>
+              <div class="property-price">1,200,000 ETB</div>
+            </div>
+          </div>
+
+          <div class="property-card">
+            <img
+              src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt="Family Home"
+              class="property-image"
+            />
+            <div class="property-overlay">
+              <button class="connect-btn">
+                <a href="home.html">Connect</a>
+              </button>
+              <div class="property-title">Spacious Family Home</div>
+              <div class="property-price">1,800,000 ETB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <!-- ...existing code... -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-header-center">
+          <h2 class="section-title">Our Professional Services</h2>
+          <p class="section-subtitle">
+            Comprehensive solutions to meet all your marketplace needs
+          </p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card">
+            <h3>Verified Listings</h3>
+            <p>
+              Every listing goes through our rigorous verification process to
+              ensure authenticity and quality.
+            </p>
+            <ul>
+              <li><i class="fas fa-check"></i>Document verification</li>
+              <li><i class="fas fa-check"></i>Property inspection</li>
+              <li><i class="fas fa-check"></i>Broker background check</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <h3>Secure Transactions</h3>
+            <p>
+              Advanced security measures and escrow services to protect both
+              buyers and sellers.
+            </p>
+            <ul>
+              <li><i class="fas fa-check"></i>Escrow protection</li>
+              <li><i class="fas fa-check"></i>Secure payment gateway</li>
+              <li><i class="fas fa-check"></i>Legal documentation</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <h3>24/7 Support</h3>
+            <p>
+              Round-the-clock customer support to assist you throughout your
+              journey.
+            </p>
+            <ul>
+              <li><i class="fas fa-check"></i>Live chat support</li>
+              <li><i class="fas fa-check"></i>Phone assistance</li>
+              <li><i class="fas fa-check"></i>Email support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+      <div class="container">
+        <div class="newsletter-content">
+          <div class="newsletter-text">
+            <h3>Stay Updated</h3>
+            <p>
+              Get the latest listings and market insights delivered to your
+              inbox
+            </p>
+          </div>
+          <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              required
+            />
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-envelope"></i> Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>FindBroker</h3>
+            <p>
+              Your trusted marketplace connecting buyers with verified brokers
+              across Ethiopia. We ensure secure, transparent, and efficient
+              transactions for all your needs.
+            </p>
+            <div class="social-links">
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" aria-label="LinkedIn"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+              <a href="#" aria-label="Telegram"
+                ><i class="fab fa-telegram"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#browse">Browse Listings</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Categories</h4>
+            <ul>
+              <li><a href="#">Real Estate</a></li>
+              <li><a href="#">Automotive</a></li>
+              <li><a href="#">Electronics</a></li>
+              <li><a href="#">Services</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Safety Tips</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact Info</h4>
+            <p><i class="fas fa-phone"></i> +251-911-123456</p>
+            <p><i class="fas fa-envelope"></i> info@findbroker.com</p>
+            <p><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</p>
+            <div class="footer-badges">
+              <span class="badge">Verified Platform</span>
+              <span class="badge">Secure Payments</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 FindBroker. All rights reserved.</p>
+          <div class="footer-badges">
+            <span class="badge">SSL Secured</span>
+            <span class="badge">Licensed</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button
+      class="back-to-top"
+      onclick="scrollToTop()"
+      aria-label="Back to top"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Welcome Back</h3>
+          <button class="close-btn" onclick="closeModal('loginModal')">
+            &times;
+          </button>
+        </div>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required />
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" /> Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+          </button>
+          <div class="form-footer">
+            <p>
+              Don't have an account?
+              <a href="#" onclick="switchToRegister()">Sign up here</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Join FindBroker</h3>
+          <button class="close-btn" onclick="closeModal('registerModal')">
+            &times;
+          </button>
+        </div>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email Address</label>
+            <input type="email" id="registerEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="registerPassword">Password</label>
+              <input type="password" id="registerPassword" required />
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="userType">Account Type</label>
+            <select id="userType" onchange="toggleBrokerFields()" required>
+              <option value="">Select account type</option>
+              <option value="buyer">Buyer (User)</option>
+              <option value="broker">Broker</option>
+            </select>
+          </div>
+          <!-- Broker specific fields (initially hidden) -->
+          <div id="brokerFields" style="display: none; border-left: 3px solid var(--primary-color); padding-left: 10px; margin-bottom: 15px;">
+            <div class="form-group">
+              <label for="brokerLicense">License / Certificate Number</label>
+              <input type="text" id="brokerLicense" placeholder="e.g. ET-RE-999" />
+            </div>
+            <div class="form-group">
+              <label for="brokerCity">City / Region of Operation</label>
+              <input type="text" id="brokerCity" placeholder="e.g. Addis Ababa" />
+            </div>
+            <div class="form-group">
+              <label for="brokerBio">Short Business Bio</label>
+              <textarea id="brokerBio" rows="3" placeholder="Describe your real estate services..."></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" required /> I agree to the Terms of Service
+              and Privacy Policy
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+          <div class="form-footer">
+            <p>
+              Already have an account?
+              <a href="#" onclick="switchToLogin()">Sign in here</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Listing Details Modal -->
+    <div class="modal modal-large" id="listingModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="listingTitle">Listing Details</h3>
+          <button class="close-btn" onclick="closeModal('listingModal')">
+            &times;
+          </button>
+        </div>
+        <div id="listingDetails"></div>
+      </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contactModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Contact Broker</h3>
+          <button class="close-btn" onclick="closeModal('contactModal')">
+            &times;
+          </button>
+        </div>
+        <form onsubmit="handleContactBroker(event)">
+          <div class="form-group">
+            <label for="contactName">Your Name</label>
+            <input type="text" id="contactName" required />
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Your Email</label>
+            <input type="email" id="contactEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="contactPhone">Your Phone</label>
+            <input type="tel" id="contactPhone" required />
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">Message</label>
+            <textarea
+              id="contactMessage"
+              rows="4"
+              placeholder="I'm interested in this listing..."
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="db.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

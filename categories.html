@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categories - FindBroker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Theme Toggle -->
+    <button
+      class="theme-toggle"
+      onclick="toggleTheme()"
+      aria-label="Toggle dark mode"
+    >
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="nav-brand">
+          <h1 class="logo">FindBroker</h1>
+          <span class="logo-tagline">Trusted Connections</span>
+        </div>
+        <nav class="nav-menu" id="navMenu">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="browse.html" class="nav-link">Browse</a>
+          <a href="categories.html" class="nav-link active">Categories</a>
+          <a href="reviews.html" class="nav-link">Reviews</a>
+          <a href="about.html" class="nav-link">About</a>
+          <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="showLoginModal()">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <button class="btn btn-primary" onclick="showRegisterModal()">
+              <i class="fas fa-user-plus"></i> Register as Broker
+            </button>
+          </div>
+        </nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Categories Section -->
+    <section id="categories" class="categories">
+      <div class="container">
+        <div class="section-header-center">
+          <h2 class="section-title">Browse by Category</h2>
+          <p class="section-subtitle">
+            Discover trusted brokers across all major categories
+          </p>
+        </div>
+        <div class="categories-grid" id="categoriesGrid">
+          <!-- Categories will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Login to FindBroker</h3>
+          <button class="close-btn" onclick="closeModal('loginModal')">
+            &times;
+          </button>
+        </div>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required />
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="rememberMe" />
+              Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+          <div class="form-footer">
+            <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+            <span
+              >Don't have an account?
+              <a href="#" onclick="switchToRegister()">Register</a></span
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Register as Broker</h3>
+          <button class="close-btn" onclick="closeModal('registerModal')">
+            &times;
+          </button>
+        </div>
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="businessName">Business Name</label>
+            <input type="text" id="businessName" required />
+          </div>
+          <div class="form-group">
+            <label for="businessCategory">Business Category</label>
+            <select id="businessCategory" required>
+              <option value="">Select Category</option>
+              <option value="real-estate">Real Estate</option>
+              <option value="automotive">Automotive</option>
+              <option value="electronics">Electronics</option>
+              <option value="fashion">Fashion</option>
+              <option value="services">Services</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="licenseNumber">License Number</label>
+            <input type="text" id="licenseNumber" required />
+          </div>
+          <div class="form-group">
+            <label for="licenseDocument">License Document</label>
+            <input
+              type="file"
+              id="licenseDocument"
+              accept=".pdf,.jpg,.png"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" required />
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="agreeTerms" required />
+              I agree to the <a href="#terms">Terms of Service</a> and
+              <a href="#privacy">Privacy Policy</a>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            Register
+          </button>
+          <div class="form-footer">
+            <span
+              >Already have an account?
+              <a href="#" onclick="switchToLogin()">Login</a></span
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button
+      class="back-to-top"
+      onclick="scrollToTop()"
+      aria-label="Back to top"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+  </body>
+</html>

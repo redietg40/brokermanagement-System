@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindBroker - Broker Login</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        background: #f8fafc;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .login-container {
+        max-width: 450px;
+        width: 90%;
+        margin: auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e2e8f0;
+      }
+      .form-title {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .form-title h1 {
+        font-size: 2.0rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+      }
+      .form-title p {
+        color: #64748b;
+      }
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        outline: none;
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus {
+        border-color: #2563eb;
+      }
+      .alert-box {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        display: none;
+      }
+      .alert-error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border: 1px solid #fca5a5;
+      }
+      .alert-warning {
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- FindBroker Header -->
+    <header class="header" style="position: static; height: 100px;">
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+        <div class="nav-brand" onclick="window.location.href='index.html'" style="cursor: pointer;">
+          <div class="logo">FindBroker</div>
+          <div class="logo-tagline">Trusted Marketplace</div>
+        </div>
+        <a href="index.html" class="btn btn-outline" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Back to Home</a>
+      </div>
+    </header>
+
+    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+      <div class="login-container">
+        <div class="form-title">
+          <h1>Broker Login</h1>
+          <p>Sign in to manage your listings and sales</p>
+        </div>
+
+        <div id="alertBox" class="alert-box"></div>
+        
+        <form id="brokerLoginForm" onsubmit="submitLogin(event)">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" required placeholder="name@example.com" />
+          </div>
+          
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <label for="password" style="margin-bottom: 0;">Password</label>
+              <a href="#" style="font-size: 0.8rem; color: #2563eb; text-decoration: none;">Forgot password?</a>
+            </div>
+            <input type="password" id="password" required placeholder="Enter password" />
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-full" style="padding: 0.8rem; font-size: 1rem; margin-top: 1rem;">
+            Sign In
+          </button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1.5rem; color: #64748b; font-size: 0.9rem;">
+          Don't have an account? <a href="broker-register.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">Register here</a>
+        </p>
+      </div>
+    </main>
+
+    <script src="db.js"></script>
+    <script>
+      // Session redirection guard (if already logged in as approved broker, go to dashboard)
+      if (DB_getBrokerSession()) {
+        window.location.href = "broker-dashboard.html";
+      }
+
+      async function submitLogin(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const alertBox = document.getElementById("alertBox");
+        
+        // Hide alerts
+        alertBox.style.display = "none";
+        
+        const res = await DB_loginBroker(email, password);
+        
+        if (res.success) {
+          window.location.href = "broker-dashboard.html";
+        } else {
+          // Display alert
+          alertBox.innerText = res.message;
+          alertBox.style.display = "block";
+          if (res.status === 'pending') {
+            alertBox.className = "alert-box alert-warning";
+          } else {
+            alertBox.className = "alert-box alert-error";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

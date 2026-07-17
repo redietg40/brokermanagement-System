@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindBroker - Broker Registration</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        background: #f8fafc;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .register-container {
+        max-width: 650px;
+        width: 90%;
+        margin: auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e2e8f0;
+      }
+      .form-title {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .form-title h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+      }
+      .form-title p {
+        color: #64748b;
+      }
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .form-group input, .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        outline: none;
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus, .form-group textarea:focus {
+        border-color: #2563eb;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      .success-box {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        display: none;
+      }
+      .success-icon {
+        font-size: 4rem;
+        color: #10b981;
+        margin-bottom: 1.5rem;
+      }
+      @media (max-width: 600px) {
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+        .register-container {
+          padding: 1.5rem;
+          margin: 20px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- FindBroker Header -->
+    <header class="header" style="position: static; height: 100px;">
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+        <div class="nav-brand" onclick="window.location.href='index.html'" style="cursor: pointer;">
+          <div class="logo">FindBroker</div>
+          <div class="logo-tagline">Trusted Marketplace</div>
+        </div>
+        <a href="index.html" class="btn btn-outline" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Back to Home</a>
+      </div>
+    </header>
+
+    <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+      <div class="register-container">
+        
+        <!-- Registration Form -->
+        <div id="registerFormBox">
+          <div class="form-title">
+            <h1>Broker Registration</h1>
+            <p>Join our platform as a verified real estate agent</p>
+          </div>
+          
+          <form id="brokerRegisterForm" onsubmit="submitRegistration(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" required placeholder="John" />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" required placeholder="Doe" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" required placeholder="john.doe@example.com" />
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" required placeholder="+251-911-XXXXXX" />
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Minimum 6 characters" />
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required placeholder="Repeat password" />
+              </div>
+            </div>
+            
+            <div style="border-top: 1px solid #e2e8f0; margin: 1.5rem 0; padding-top: 1.5rem;">
+              <h3 style="font-size: 1.1rem; color: #1e293b; margin-bottom: 1rem;">Professional Credentials</h3>
+              
+              <div class="form-group">
+                <label for="licenseNumber">License / Certificate Number</label>
+                <input type="text" id="licenseNumber" required placeholder="e.g. ET-RE-001" />
+              </div>
+              
+              <div class="form-group">
+                <label for="city">City / Region of Operation</label>
+                <input type="text" id="city" required placeholder="e.g. Addis Ababa" />
+              </div>
+              
+              <div class="form-group">
+                <label for="bio">Business Bio / Description</label>
+                <textarea id="bio" rows="3" required placeholder="Describe your experience, specialty, and services..."></textarea>
+              </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1.5rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; font-size: 0.85rem; color: #64748b;">
+                <input type="checkbox" required style="width: auto;" />
+                I agree to the Terms of Service and Privacy Policy for FindBroker agents
+              </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full" style="padding: 0.9rem; font-size: 1rem; margin-top: 1rem;">
+              Submit Registration
+            </button>
+          </form>
+          
+          <p style="text-align: center; margin-top: 1.5rem; color: #64748b; font-size: 0.9rem;">
+            Already have an account? <a href="broker-login.html" style="color: #2563eb; text-decoration: none; font-weight: 600;">Log in here</a>
+          </p>
+        </div>
+
+        <!-- Success Confirmation Container -->
+        <div id="successBox" class="success-box">
+          <i class="fas fa-check-circle success-icon"></i>
+          <h2 style="font-size: 1.75rem; font-weight: 800; color: #1e293b; margin-bottom: 1rem;">Registration Submitted!</h2>
+          <p style="color: #64748b; line-height: 1.6; margin-bottom: 2rem;">
+            Thank you for registering. Your details and license verification request have been sent to our administration team.
+            <br>
+            We will review and verify your account shortly. You will be able to log in to your dashboard once approved.
+          </p>
+          <a href="index.html" class="btn btn-primary">Go to Homepage</a>
+        </div>
+        
+      </div>
+    </main>
+
+    <script src="db.js"></script>
+    <script>
+      async function submitRegistration(event) {
+        event.preventDefault();
+        
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const licenseNumber = document.getElementById("licenseNumber").value.trim();
+        const city = document.getElementById("city").value.trim();
+        const bio = document.getElementById("bio").value.trim();
+        
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+        
+        const name = `${firstName} ${lastName}`;
+        const res = await DB_registerBroker({ name, email, phone, password, licenseNumber, city, bio });
+        
+        if (res.success) {
+          document.getElementById("registerFormBox").style.display = "none";
+          document.getElementById("successBox").style.display = "block";
+        } else {
+          alert(res.message);
+        }
+      }
+    </script>
+  </body>
+</html>

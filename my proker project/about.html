@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - FindBroker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">FindBroker</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#browse">Browse</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button id="themeToggle" class="btn btn-secondary theme-toggle" title="Toggle theme">🌙</button>
+                <a href="#" class="btn btn-secondary" onclick="openModal('loginModal')">Login</a>
+                <a href="#" class="btn btn-primary" onclick="openModal('registerModal')">Register as Broker</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- About Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>About FindBroker</h1>
+            <p>Connecting trusted brokers with customers since 2020. Building bridges for better business relationships.</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="features">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-section">
+                    <h2>Our Mission</h2>
+                    <p>At FindBroker, we believe in creating a transparent, secure, and efficient marketplace where customers can easily connect with verified, licensed brokers across various industries. Our mission is to eliminate the uncertainty and risk often associated with finding reliable business intermediaries.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>Our Story</h2>
+                    <p>Founded in 2020, FindBroker emerged from the need to address the challenges customers face when searching for trustworthy brokers. Our founders, experienced professionals from the finance and technology sectors, recognized the gap in the market for a comprehensive platform that prioritizes verification, transparency, and user experience.</p>
+                    <p>What started as a small team of five has grown into a dedicated organization serving thousands of customers and hundreds of verified brokers across Ethiopia and beyond.</p>
+                </div>
+
+                <div class="about-section">
+                    <h2>Our Values</h2>
+                    <div class="values-grid">
+                        <div class="value-card">
+                            <div class="feature-icon">🛡️</div>
+                            <h3>Trust & Security</h3>
+                            <p>Every broker undergoes rigorous verification to ensure they meet our high standards for licensing, experience, and ethical practices.</p>
+                        </div>
+                        <div class="value-card">
+                            <div class="feature-icon">🌟</div>
+                            <h3>Excellence</h3>
+                            <p>We continuously strive to improve our platform and services, ensuring the best possible experience for both customers and brokers.</p>
+                        </div>
+                        <div class="value-card">
+                            <div class="feature-icon">🤝</div>
+                            <h3>Partnership</h3>
+                            <p>We view our relationship with brokers and customers as partnerships, working together to achieve mutual success and satisfaction.</p>
+                        </div>
+                        <div class="value-card">
+                            <div class="feature-icon">💡</div>
+                            <h3>Innovation</h3>
+                            <p>We leverage cutting-edge technology to create intuitive, efficient solutions that make finding and connecting with brokers seamless.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>Our Team</h2>
+                    <p>Our diverse team brings together expertise from finance, technology, customer service, and business development. We're united by our commitment to creating a platform that serves our users' needs while maintaining the highest standards of integrity and professionalism.</p>
+                    <div class="team-stats">
+                        <div class="stat-item">
+                            <h3>500+</h3>
+                            <p>Verified Brokers</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>10,000+</h3>
+                            <p>Successful Connections</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>15+</h3>
+                            <p>Industry Categories</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>99%</h3>
+                            <p>Customer Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h2>Why Choose FindBroker?</h2>
+                    <ul class="benefits-list">
+                        <li><strong>Comprehensive Verification:</strong> All brokers undergo thorough background checks, license verification, and performance reviews.</li>
+                        <li><strong>Wide Range of Services:</strong> From real estate and insurance to finance and technology, we cover diverse industry sectors.</li>
+                        <li><strong>User-Friendly Platform:</strong> Our intuitive interface makes it easy to search, compare, and connect with the right broker for your needs.</li>
+                        <li><strong>Ongoing Support:</strong> Our customer service team is available to assist you throughout your broker selection and engagement process.</li>
+                        <li><strong>Transparent Reviews:</strong> Read genuine reviews and ratings from other customers to make informed decisions.</li>
+                        <li><strong>Secure Communication:</strong> All interactions through our platform are secure and protected.</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h2>Looking Forward</h2>
+                    <p>As we continue to grow, we remain committed to our core mission of connecting customers with trusted brokers. We're constantly working on new features, expanding our broker network, and improving our verification processes to serve you better.</p>
+                    <p>Join thousands of satisfied customers who have found their perfect broker match through FindBroker. Whether you're looking for real estate guidance, insurance solutions, financial planning, or any other brokerage service, we're here to help you make the right connection.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FindBroker</h3>
+                    <p>Connecting verified brokers with customers for safe and trusted transactions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>For Customers</h3>
+                    <ul>
+                        <li><a href="index.html#browse">Browse Brokers</a></li>
+                        <li><a href="#">Search by Category</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Brokers</h3>
+                    <ul>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">Verification Process</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 FindBroker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="userType" value="customer" checked> Customer
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="broker"> Broker
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="admin"> Admin
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Register as Broker</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="brokerName">Full Name:</label>
+                    <input type="text" id="brokerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerEmail">Email:</label>
+                    <input type="email" id="brokerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerPhone">Phone:</label>
+                    <input type="tel" id="brokerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerCategory">Category:</label>
+                    <select id="brokerCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="finance">Finance</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="technology">Technology</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brokerLocation">Location:</label>
+                    <select id="brokerLocation" required>
+                        <option value="">Select Location</option>
+                        <option value="addis-ababa">Addis Ababa</option>
+                        <option value="dire-dawa">Dire Dawa</option>
+                        <option value="bahir-dar">Bahir Dar</option>
+                        <option value="hawassa">Hawassa</option>
+                        <option value="mekelle">Mekelle</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brokerLicense">License Number:</label>
+                    <input type="text" id="brokerLicense" required>
+                </div>
+                <div class="form-group">
+                    <label for="brokerDescription">Description:</label>
+                    <textarea id="brokerDescription" rows="4" placeholder="Describe your services..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script3.js"></script>
+</body>
+</html>

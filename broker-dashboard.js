@@ -244,6 +244,32 @@ async function deleteListing(id) {
   }
 }
 
+// Dynamic listing type options based on category
+function updateListingTypeOptions() {
+  const category = document.getElementById('listingCategory').value;
+  const typeSelect = document.getElementById('listingType');
+  
+  const typeOptions = {
+    'real-estate': ['villa', 'apartment', 'house', 'commercial', 'land', 'office'],
+    'automotive': ['sedan', 'suv', 'truck', 'motorcycle', 'bus', 'van'],
+    'electronics': ['smartphone', 'laptop', 'tablet', 'tv', 'camera', 'accessories'],
+    'fashion': ['clothing', 'shoes', 'bags', 'jewelry', 'watches', 'accessories'],
+    'food': ['restaurant', 'catering', 'grocery', 'beverages', 'bakery', 'farm-produce'],
+    'agriculture': ['crops', 'livestock', 'equipment', 'farmland', 'seeds', 'fertilizers'],
+    'services': ['cleaning', 'moving', 'repair', 'consulting', 'photography', 'legal'],
+    'health': ['clinic', 'beauty-salon', 'gym', 'pharmacy', 'wellness', 'medical-equipment'],
+    'sports': ['equipment', 'fitness', 'outdoor', 'team-sports', 'water-sports', 'cycling'],
+    'education': ['tutoring', 'courses', 'books', 'school-supplies', 'training', 'workshops'],
+    'travel': ['tours', 'hotels', 'flights', 'car-rental', 'packages', 'activities'],
+    'construction': ['materials', 'equipment', 'renovation', 'design', 'plumbing', 'electrical']
+  };
+
+  const options = typeOptions[category] || ['general'];
+  typeSelect.innerHTML = options.map(opt => 
+    `<option value="${opt}">${opt.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>`
+  ).join('');
+}
+
 // Edit Listing Mode
 async function editListing(id) {
   const item = await DB_getListingById(id);
@@ -252,6 +278,11 @@ async function editListing(id) {
   // Set form fields
   document.getElementById("editListingId").value = item.id;
   document.getElementById("listingTitle").value = item.title;
+  // Restore category first, then update type options
+  if (item.category) {
+    document.getElementById("listingCategory").value = item.category;
+    updateListingTypeOptions();
+  }
   document.getElementById("listingType").value = item.type;
   document.getElementById("listingSaleStatus").value = item.saleStatus || 'for-sale';
   document.getElementById("listingLocation").value = item.location;
@@ -278,8 +309,8 @@ function cancelListingEdit() {
   uploadedImagesBase64 = [];
   document.getElementById("imagePreviewContainer").innerHTML = '<span class="placeholder-text">No images selected yet.</span>';
   
-  document.getElementById("listingFormTitle").innerText = "Post a New Property Listing";
-  document.getElementById("submitBtn").innerText = "Post Property";
+  document.getElementById("listingFormTitle").innerText = "Post a New Listing";
+  document.getElementById("submitBtn").innerText = "Post Listing";
   
   switchTab('listings');
 }
@@ -336,6 +367,7 @@ async function submitListing(event) {
   
   const editId = document.getElementById("editListingId").value;
   const title = document.getElementById("listingTitle").value.trim();
+  const category = document.getElementById("listingCategory").value;
   const type = document.getElementById("listingType").value;
   const saleStatus = document.getElementById("listingSaleStatus").value;
   const location = document.getElementById("listingLocation").value;
@@ -348,14 +380,14 @@ async function submitListing(event) {
   
   // Validate images count
   if (uploadedImagesBase64.length === 0) {
-    showNotification("Please select at least 1 image for the property.", "error");
+    showNotification("Please select at least 1 image for the listing.", "error");
     return;
   }
 
   const payload = {
     brokerId: currentBroker.id,
     brokerName: currentBroker.name,
-    title, type, saleStatus, location, locationLabel, price, area,
+    title, category, type, saleStatus, location, locationLabel, price, area,
     bedrooms, bathrooms, description,
     images: uploadedImagesBase64
   };
@@ -364,7 +396,7 @@ async function submitListing(event) {
     // Update listing
     const success = await DB_updateListing(editId, payload);
     if (success) {
-      showNotification("Property updated successfully!", "success");
+      showNotification("Listing updated successfully!", "success");
       cancelListingEdit();
     } else {
       showNotification("Failed to update listing.", "error");
@@ -372,11 +404,11 @@ async function submitListing(event) {
   } else {
     // Create listing
     const res = await DB_addListing(payload);
-    if (res.success) {
-      showNotification("Property listing posted successfully!", "success");
+    if (res && res.success) {
+      showNotification("Listing posted successfully!", "success");
       cancelListingEdit();
     } else {
-      showNotification("Failed to post listing.", "error");
+      showNotification(res && res.message ? res.message : "Failed to post listing. Please check your connection.", "error");
     }
   }
 }

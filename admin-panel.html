@@ -150,16 +150,46 @@
         <!-- Tab Content: All Listings -->
         <section id="tab-listings" class="tab-panel" style="margin-top: 2rem;">
           <div class="dashboard-card">
-            <h3>Global Property Listing Registry</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+              <h3 style="margin:0;">Global Listing Registry</h3>
+              <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
+                <input type="text" id="adminListingSearch" placeholder="Search title or broker..." 
+                  style="padding:0.45rem 0.85rem; border:1.5px solid #e2e8f0; border-radius:8px; font-size:0.85rem; outline:none; width:200px;"
+                  oninput="filterListingsAdmin()" />
+                <select id="adminListingCatFilter" onchange="filterListingsAdmin()"
+                  style="padding:0.45rem 0.75rem; border:1.5px solid #e2e8f0; border-radius:8px; font-size:0.85rem; outline:none; background:#fff;">
+                  <option value="">All Categories</option>
+                  <option value="real-estate">🏠 Real Estate</option>
+                  <option value="automotive">🚗 Automotive</option>
+                  <option value="electronics">💻 Electronics</option>
+                  <option value="fashion">👗 Fashion</option>
+                  <option value="food">🍽️ Food &amp; Beverage</option>
+                  <option value="agriculture">🌱 Agriculture</option>
+                  <option value="services">🔧 Services</option>
+                  <option value="health">❤️ Health &amp; Beauty</option>
+                  <option value="sports">⚽ Sports</option>
+                  <option value="education">🎓 Education</option>
+                  <option value="travel">✈️ Travel</option>
+                  <option value="construction">🏗️ Construction</option>
+                </select>
+                <select id="adminListingStatusFilter" onchange="filterListingsAdmin()"
+                  style="padding:0.45rem 0.75rem; border:1.5px solid #e2e8f0; border-radius:8px; font-size:0.85rem; outline:none; background:#fff;">
+                  <option value="">All Statuses</option>
+                  <option value="pending">⏳ Pending</option>
+                  <option value="approved">✅ Approved</option>
+                  <option value="rejected">❌ Rejected</option>
+                </select>
+              </div>
+            </div>
             <table class="data-table" id="allListingsTable">
               <thead>
                 <tr>
                   <th>Property Details</th>
-                  <th>Broker Account</th>
-                  <th>Type</th>
+                  <th>Broker</th>
                   <th>Location</th>
                   <th>Price</th>
-                  <th>Action</th>
+                  <th>Listing Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>

@@ -154,19 +154,37 @@
         <!-- Tab Content: Add / Edit Listing -->
         <section id="tab-add-listing" class="tab-panel">
           <div class="dashboard-card">
-            <h3 id="listingFormTitle" style="font-size: 1.4rem; margin-bottom: 1.5rem; color: #1e293b;">Post a New Property Listing</h3>
+            <h3 id="listingFormTitle" style="font-size: 1.4rem; margin-bottom: 1.5rem; color: #1e293b;">Post a New Listing</h3>
             
             <form id="listingForm" onsubmit="submitListing(event)">
               <input type="hidden" id="editListingId" value="" />
               
               <div class="form-group">
-                <label for="listingTitle">Property Title</label>
-                <input type="text" id="listingTitle" required placeholder="e.g. Luxurious 4-Bedroom Villa in Bole" />
+                <label for="listingTitle">Listing Title</label>
+                <input type="text" id="listingTitle" required placeholder="e.g. Luxurious 4-Bedroom Villa, Toyota Camry 2022, iPhone 15 Pro..." />
+              </div>
+
+              <div class="form-group">
+                <label for="listingCategory">Category</label>
+                <select id="listingCategory" required onchange="updateListingTypeOptions()">
+                  <option value="real-estate">🏠 Real Estate</option>
+                  <option value="automotive">🚗 Automotive</option>
+                  <option value="electronics">💻 Electronics</option>
+                  <option value="fashion">👗 Fashion</option>
+                  <option value="food">🍽️ Food & Beverage</option>
+                  <option value="agriculture">🌱 Agriculture</option>
+                  <option value="services">🔧 Services</option>
+                  <option value="health">❤️ Health & Beauty</option>
+                  <option value="sports">⚽ Sports & Recreation</option>
+                  <option value="education">🎓 Education</option>
+                  <option value="travel">✈️ Travel & Tourism</option>
+                  <option value="construction">🏗️ Construction</option>
+                </select>
               </div>
               
               <div class="form-row">
                 <div class="form-group">
-                  <label for="listingType">Property Type</label>
+                  <label for="listingType">Listing Type / Sub-Category</label>
                   <select id="listingType" required>
                     <option value="villa">Villa</option>
                     <option value="apartment">Apartment</option>
@@ -209,7 +227,7 @@
                 </div>
                 
                 <div class="form-group">
-                  <label for="listingArea">Area size (m²)</label>
+                  <label for="listingArea">Size / Area (m² or units)</label>
                   <input type="number" id="listingArea" required placeholder="e.g. 350" />
                 </div>
               </div>
@@ -228,7 +246,7 @@
               
               <div class="form-group">
                 <label for="listingDescription">Detailed Description</label>
-                <textarea id="listingDescription" rows="5" required placeholder="Describe the property highlights, safety features, environment, facilities..."></textarea>
+                <textarea id="listingDescription" rows="5" required placeholder="Describe the listing details, condition, features, and any special highlights..."></textarea>
               </div>
               
               <div class="form-group">
@@ -242,7 +260,7 @@
               </div>
               
               <div style="display:flex; gap:1rem; margin-top:2rem;">
-                <button type="submit" class="btn btn-primary" style="flex:2;" id="submitBtn">Post Property</button>
+                <button type="submit" class="btn btn-primary" style="flex:2;" id="submitBtn">Post Listing</button>
                 <button type="button" class="btn btn-outline" style="flex:1;" onclick="cancelListingEdit()">Cancel</button>
               </div>
             </form>

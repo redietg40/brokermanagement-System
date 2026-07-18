@@ -1,84 +1,84 @@
 // Mock Data
 const categories = [
   {
-    id: 1,
+    id: "real-estate",
     name: "Real Estate",
     icon: "fas fa-home",
     count: 245,
     color: "#3b82f6",
   },
   {
-    id: 2,
+    id: "automotive",
     name: "Automotive",
     icon: "fas fa-car",
     count: 189,
     color: "#ef4444",
   },
   {
-    id: 3,
+    id: "electronics",
     name: "Electronics",
     icon: "fas fa-laptop",
     count: 334,
     color: "#8b5cf6",
   },
   {
-    id: 4,
+    id: "fashion",
     name: "Fashion",
     icon: "fas fa-tshirt",
     count: 167,
     color: "#ec4899",
   },
   {
-    id: 5,
+    id: "services",
     name: "Services",
     icon: "fas fa-tools",
     count: 223,
     color: "#10b981",
   },
   {
-    id: 6,
+    id: "food",
     name: "Food & Beverage",
     icon: "fas fa-utensils",
     count: 145,
     color: "#f59e0b",
   },
   {
-    id: 7,
+    id: "health",
     name: "Health & Beauty",
     icon: "fas fa-heart",
     count: 178,
     color: "#06b6d4",
   },
   {
-    id: 8,
+    id: "sports",
     name: "Sports & Recreation",
     icon: "fas fa-football-ball",
     count: 156,
     color: "#84cc16",
   },
   {
-    id: 9,
+    id: "education",
     name: "Education",
     icon: "fas fa-graduation-cap",
     count: 89,
     color: "#6366f1",
   },
   {
-    id: 10,
+    id: "travel",
     name: "Travel & Tourism",
     icon: "fas fa-plane",
     count: 134,
     color: "#14b8a6",
   },
   {
-    id: 11,
+    id: "agriculture",
     name: "Agriculture",
     icon: "fas fa-seedling",
     count: 198,
     color: "#22c55e",
   },
   {
-    id: 12,
+    id: "construction",
     name: "Construction",
     icon: "fas fa-hard-hat",
     count: 167,
@@ -328,6 +328,7 @@ async function initializeApp() {
 // Enhanced Render Categories
 function renderCategories() {
   const categoriesGrid = document.getElementById("categoriesGrid");
+  if (!categoriesGrid) return; // guard: not on every page
   categoriesGrid.innerHTML = categories
     .map(
       (category, index) => `
@@ -348,78 +349,144 @@ function renderCategories() {
 // Enhanced Render Listings
 function renderListings() {
   const listingsGrid = document.getElementById("listingsGrid");
+  if (!listingsGrid) return;
   listingsGrid.className = `listings-grid ${currentView}-view`;
+
+  if (!filteredListings || filteredListings.length === 0) {
+    listingsGrid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: #64748b;">
+        <i class="fas fa-folder-open" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem; display: block;"></i>
+        <h3 style="font-size: 1.25rem; color: #1e293b;">No listings found</h3>
+        <p>No listings match the selected category or filters.</p>
+      </div>
+    `;
+    return;
+  }
 
   listingsGrid.innerHTML = filteredListings
     .map(
-      (listing, index) => `
-        <div class="listing-card fade-in" onclick="showListingDetails(${
-          listing.id
-        })" style="animation-delay: ${index * 0.1}s">
-            <img src="${listing.image}" alt="${
-        listing.title
-      }" class="listing-image" loading="lazy">
+      (listing, index) => {
+        const firstImg = (listing.images && listing.images.length > 0) ? listing.images[0] : (listing.image || 'images/villa2.jpg');
+        const bName = listing.brokerName || (listing.broker && listing.broker.name) || 'Verified Broker';
+        const bAvatar = (listing.broker && listing.broker.avatar) || 'images/broker-image-removebg-preview.png';
+        const bRating = (listing.broker && listing.broker.rating) || 4.8;
+        const bExp = (listing.broker && listing.broker.experience) || 'Verified Agent';
+        const cat = listing.category || listing.type || 'Real Estate';
+        const loc = listing.locationLabel || listing.location || 'Ethiopia';
+        const views = listing.views || 0;
+        const dateStr = listing.createdAt ? formatDate(listing.createdAt) : (listing.date || 'Recently');
+
+        return `
+        <div class="listing-card fade-in" onclick="showListingDetails('${listing.id}')" style="animation-delay: ${index * 0.05}s">
+            <img src="${firstImg}" alt="${listing.title}" class="listing-image" loading="lazy" onerror="this.src='images/villa2.jpg';">
             <div class="listing-content">
-                <div class="listing-category">${listing.category}</div>
+                <div class="listing-category" style="text-transform: capitalize;">${cat}</div>
                 <h3 class="listing-title">${listing.title}</h3>
-                <p class="listing-description">${listing.description}</p>
+                <p class="listing-description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${listing.description || ''}</p>
                 <div class="listing-meta">
                     <span class="listing-location">
-                        <i class="fas fa-map-marker-alt"></i> ${
-                          listing.location
-                        }
+                        <i class="fas fa-map-marker-alt"></i> ${loc}
                     </span>
                     <span class="listing-price">
-                        <i class="fas fa-tag"></i> ${formatPrice(
-                          listing.price
-                        )} ETB
+                        <i class="fas fa-tag"></i> ${formatPrice(listing.price)} ETB
                     </span>
                 </div>
                 <div class="listing-stats">
                     <span class="listing-views">
-                        <i class="fas fa-eye"></i> ${listing.views} views
+                        <i class="fas fa-eye"></i> ${views} views
                     </span>
-                    <span class="listing-date">${formatDate(
-                      listing.date
-                    )}</span>
+                    <span class="listing-date">${dateStr}</span>
                 </div>
                 <div class="broker-info">
-                    <img src="${listing.broker.avatar}" alt="${
-        listing.broker.name
-      }" class="broker-avatar">
+                    <img src="${bAvatar}" alt="${bName}" class="broker-avatar" onerror="this.src='images/broker-image-removebg-preview.png';">
                     <div class="broker-details">
-                        <h4>${listing.broker.name}</h4>
+                        <h4>${bName}</h4>
                         <div class="broker-rating">
-                            ${"★".repeat(Math.floor(listing.broker.rating))} ${
-        listing.broker.rating
-      }
+                            ${"★".repeat(Math.floor(bRating))} ${bRating}
                         </div>
-                        <div class="broker-experience">${
-                          listing.broker.experience
-                        } experience</div>
+                        <div class="broker-experience">${bExp}</div>
                     </div>
-                    ${
-                      listing.broker.verified
-                        ? '<span class="verified-badge"><i class="fas fa-check"></i> Verified</span>'
-                        : ""
-                    }
-                    ${
-                      listing.featured
-                        ? '<span class="featured-badge"><i class="fas fa-star"></i> Featured</span>'
-                        : ""
-                    }
+                    <span class="verified-badge"><i class="fas fa-check"></i> Verified</span>
                 </div>
             </div>
         </div>
-    `
+    `;
+      }
     )
     .join("");
+}
+
+// Category Filter & Sorting Helpers for browse.html
+function populateCategoryFilter() {
+  const select = document.getElementById("categoryFilter");
+  if (!select) return;
+
+  select.innerHTML = `<option value="">All Categories</option>` +
+    categories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+
+  // Check URL params for category filter (e.g. browse.html?category=real-estate)
+  const params = new URLSearchParams(window.location.search);
+  const catParam = params.get('category') || params.get('cat');
+  if (catParam) {
+    select.value = catParam;
+    filterListings();
+  }
+}
+
+function filterListings() {
+  const catSelect = document.getElementById("categoryFilter");
+  const selectedCat = catSelect ? catSelect.value.toLowerCase() : "";
+
+  if (!selectedCat) {
+    filteredListings = [...listings];
+  } else {
+    filteredListings = listings.filter(l => {
+      const itemCat = (l.category || l.type || "").toLowerCase();
+      const itemType = (l.type || "").toLowerCase();
+      return itemCat.includes(selectedCat) || selectedCat.includes(itemCat) || itemType.includes(selectedCat);
+    });
+  }
+  sortListings();
+}
+
+function filterByCategory(catName) {
+  const catObj = categories.find(c => c.name.toLowerCase() === catName.toLowerCase() || c.id.toLowerCase() === catName.toLowerCase());
+  const catId = catObj ? catObj.id : catName.toLowerCase();
+  
+  const select = document.getElementById("categoryFilter");
+  if (select) {
+    select.value = catId;
+    filterListings();
+  } else {
+    window.location.href = `browse.html?category=${catId}`;
+  }
+}
+
+function sortListings() {
+  const sortSelect = document.getElementById("sortFilter");
+  const sortVal = sortSelect ? sortSelect.value : "newest";
+
+  if (sortVal === "newest") {
+    filteredListings.sort((a, b) => new Date(b.createdAt || b.date || 0) - new Date(a.createdAt || a.date || 0));
+  } else if (sortVal === "oldest") {
+    filteredListings.sort((a, b) => new Date(a.createdAt || a.date || 0) - new Date(b.createdAt || b.date || 0));
+  } else if (sortVal === "name") {
+    filteredListings.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortVal === "rating") {
+    filteredListings.sort((a, b) => ((b.broker && b.broker.rating) || 0) - ((a.broker && a.broker.rating) || 0));
+  } else if (sortVal === "price-low") {
+    filteredListings.sort((a, b) => a.price - b.price);
+  } else if (sortVal === "price-high") {
+    filteredListings.sort((a, b) => b.price - a.price);
+  }
+  renderListings();
 }
 
 // Render Testimonials with proper carousel structure
 function renderTestimonials() {
   const testimonialsSlider = document.getElementById("testimonialsSlider");
   const sliderDots = document.getElementById("sliderDots");
+  if (!testimonialsSlider || !sliderDots) return; // guard: not on every page
 
   // Create testimonials container with proper flex structure
   testimonialsSlider.innerHTML = `
@@ -967,22 +1034,44 @@ function performSearch() {
   document.getElementById("browse").scrollIntoView({ behavior: "smooth" });
 }
 
-function filterByCategory(categoryName) {
-  if (categoryName === "Real Estate") {
-    window.location.href = "real-estate.html";
-    return;
-  }
+function normalizeCategory(cat) {
+  if (!cat) return "";
+  const c = cat.toLowerCase().trim();
+  if (c === "real estate" || c === "real-estate") return "real-estate";
+  if (c === "automotive" || c === "car") return "automotive";
+  if (c === "electronics" || c === "laptop") return "electronics";
+  if (c === "fashion" || c === "clothing") return "fashion";
+  if (c === "food & beverage" || c === "food") return "food";
+  if (c === "agriculture" || c === "seedling") return "agriculture";
+  if (c === "services") return "services";
+  if (c === "health & beauty" || c === "health") return "health";
+  if (c === "sports & recreation" || c === "sports") return "sports";
+  if (c === "education") return "education";
+  if (c === "travel & tourism" || c === "travel") return "travel";
+  if (c === "construction") return "construction";
+  return c.replace(/[^a-z0-9]+/g, '-');
+}
 
-  document.getElementById("categoryFilter").value = categoryName;
-  filterListings();
-  document.getElementById("browse").scrollIntoView({ behavior: "smooth" });
+function filterByCategory(categoryId) {
+  const categoryFilter = document.getElementById("categoryFilter");
+  if (categoryFilter) {
+    categoryFilter.value = categoryId;
+    filterListings();
+    const browseSection = document.getElementById("browse");
+    if (browseSection) {
+      browseSection.scrollIntoView({ behavior: "smooth" });
+    }
+  } else {
+    window.location.href = `browse.html?category=${categoryId}`;
+  }
 }
 
 function filterListings() {
   const category = document.getElementById("categoryFilter").value;
 
   filteredListings = listings.filter((listing) => {
-    return !category || listing.category === category;
+    if (!category) return true;
+    return normalizeCategory(listing.category) === normalizeCategory(category);
   });
 
   renderListings();
@@ -1010,12 +1099,13 @@ function sortListings() {
 // Populate Category Filter
 function populateCategoryFilter() {
   const categoryFilter = document.getElementById("categoryFilter");
+  if (!categoryFilter) return;
   categoryFilter.innerHTML =
     '<option value="">All Categories</option>' +
     categories
       .map(
         (category) =>
-          `<option value="${category.name}">${category.name}</option>`
+          `<option value="${category.id}">${category.name}</option>`
       )
       .join("");
 }

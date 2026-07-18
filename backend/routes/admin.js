@@ -52,10 +52,16 @@ router.get('/brokers', async (req, res) => {
   }
 });
 
-// Get Global Property Listing Registry
+// Get Global Property Listing Registry (with optional filters)
 router.get('/listings', async (req, res) => {
   try {
+    const { category, status } = req.query;
+    const where = {};
+    if (category) where.category = category;
+    if (status) where.listingStatus = status;
+
     const listings = await prisma.listing.findMany({
+      where,
       orderBy: { createdAt: 'desc' },
       include: {
         broker: {
@@ -64,7 +70,6 @@ router.get('/listings', async (req, res) => {
       }
     });
 
-    // Format output matching local db format (brokerName is pre-populated)
     const formattedListings = listings.map(l => ({
       ...l,
       brokerName: l.broker.name
@@ -144,6 +149,37 @@ router.delete('/delete-listing/:id', async (req, res) => {
   } catch (error) {
     console.error('Error deleting listing:', error);
     res.status(500).json({ success: false, message: 'Server error deleting listing.' });
+  }
+});
+
+// Approve Listing (make it public)
+router.post('/approve-listing/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.listing.update({
+      where: { id },
+      data: { listingStatus: 'approved', active: true }
+    });
+    res.json({ success: true, message: 'Listing approved and now publicly visible.' });
+  } catch (error) {
+    console.error('Error approving listing:', error);
+    res.status(500).json({ success: false, message: 'Server error approving listing.' });
+  }
+});
+
+// Reject Listing
+router.post('/reject-listing/:id', async (req, res) => {
+  const { id } = req.params;
+  const { reason } = req.body;
+  try {
+    await prisma.listing.update({
+      where: { id },
+      data: { listingStatus: 'rejected', active: false }
+    });
+    res.json({ success: true, message: 'Listing rejected.' });
+  } catch (error) {
+    console.error('Error rejecting listing:', error);
+    res.status(500).json({ success: false, message: 'Server error rejecting listing.' });
   }
 });
 

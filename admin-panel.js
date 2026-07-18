@@ -209,12 +209,13 @@ function renderListingsTable(listings) {
   if (!tbody) return;
 
   if (!listings || listings.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 3rem 0;">No listings found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 3rem 0;">No listings found.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = listings.map(l => {
     const firstImg = (l.images && l.images.length > 0) ? l.images[0] : 'images/villa2.jpg';
+    const statusColor = l.listingStatus === 'approved' ? '#22c55e' : l.listingStatus === 'rejected' ? '#ef4444' : '#f59e0b';
     return `
       <tr>
         <td>
@@ -222,22 +223,52 @@ function renderListingsTable(listings) {
             <img class="property-thumb" src="${firstImg}" onerror="this.src='images/villa2.jpg';">
             <div class="property-title-info">
               <span class="property-title">${l.title}</span>
-              <span class="property-meta-specs">${l.bedrooms} Beds • ${l.bathrooms} Baths • ${l.area} m²</span>
+              <span class="property-meta-specs" style="text-transform:capitalize;">${l.category || ''} · ${l.type}</span>
             </div>
           </div>
         </td>
-        <td>${l.brokerName || (l.broker && l.broker.name) || "Unknown Broker"}</td>
-        <td style="text-transform: capitalize;">${l.type}</td>
-        <td style="text-transform: capitalize;">${l.location.replace(/-/g, ' ')}</td>
+        <td>${l.brokerName || (l.broker && l.broker.name) || "Unknown"}</td>
+        <td style="text-transform: capitalize;">${(l.location || '').replace(/-/g, ' ')}</td>
         <td style="font-weight:700; color:#2563eb;">${new Intl.NumberFormat('en-ET').format(l.price)} ETB</td>
         <td>
+          <span style="display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:600; background:${statusColor}20; color:${statusColor}; text-transform:capitalize;">
+            ${l.listingStatus || 'pending'}
+          </span>
+        </td>
+        <td>
           <div class="actions-cell">
+            ${l.listingStatus !== 'approved' ? `<button class="btn btn-sm btn-success" onclick="approveListingAction('${l.id}')"><i class="fas fa-check"></i> Approve</button>` : ''}
+            ${l.listingStatus === 'approved' ? `<button class="btn btn-sm" style="background:#94a3b8;color:#fff;border:none;" onclick="rejectListingAction('${l.id}')"><i class="fas fa-ban"></i> Revoke</button>` : ''}
+            ${l.listingStatus === 'pending' ? `<button class="btn btn-sm btn-danger" onclick="rejectListingAction('${l.id}')"><i class="fas fa-times"></i> Reject</button>` : ''}
             <button class="btn btn-sm btn-danger" onclick="deleteListingAction('${l.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </td>
       </tr>
     `;
   }).join("");
+}
+
+// Filter Listings by category/status (called from search bar in admin panel)
+async function filterListingsAdmin() {
+  const catEl = document.getElementById('adminListingCatFilter');
+  const statusEl = document.getElementById('adminListingStatusFilter');
+  const searchEl = document.getElementById('adminListingSearch');
+
+  const category = catEl ? catEl.value : '';
+  const status = statusEl ? statusEl.value : '';
+  const searchTerm = searchEl ? searchEl.value.toLowerCase() : '';
+
+  let listings = await DB_getListingsFiltered(category, status);
+
+  // Client-side title search
+  if (searchTerm) {
+    listings = listings.filter(l =>
+      (l.title || '').toLowerCase().includes(searchTerm) ||
+      (l.brokerName || '').toLowerCase().includes(searchTerm)
+    );
+  }
+
+  renderListingsTable(listings);
 }
 
 // ============================================================
@@ -292,6 +323,26 @@ async function deleteListingAction(listingId) {
     } else {
       showAdminNotification("Error deleting listing. Please try again.", "error");
     }
+  }
+}
+
+async function approveListingAction(listingId) {
+  const success = await DB_approveListingAdmin(listingId);
+  if (success) {
+    showAdminNotification("✅ Listing approved and is now publicly visible.", "success");
+    await initDashboardData();
+  } else {
+    showAdminNotification("Error approving listing. Please try again.", "error");
+  }
+}
+
+async function rejectListingAction(listingId) {
+  const success = await DB_rejectListingAdmin(listingId);
+  if (success) {
+    showAdminNotification("Listing rejected / revoked from public view.", "info");
+    await initDashboardData();
+  } else {
+    showAdminNotification("Error rejecting listing. Please try again.", "error");
   }
 }
 

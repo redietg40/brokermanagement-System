@@ -145,6 +145,26 @@ async function DB_deleteListing(id) {
   return res.success;
 }
 
+async function DB_approveListingAdmin(id) {
+  const res = await apiCall(`/admin/approve-listing/${id}`, 'POST');
+  return res.success;
+}
+
+async function DB_rejectListingAdmin(id) {
+  const res = await apiCall(`/admin/reject-listing/${id}`, 'POST');
+  return res.success;
+}
+
+async function DB_getListingsFiltered(category = '', status = '') {
+  let query = '/admin/listings';
+  const params = new URLSearchParams();
+  if (category) params.append('category', category);
+  if (status) params.append('status', status);
+  if (params.toString()) query += '?' + params.toString();
+  const res = await apiCall(query, 'GET');
+  return res.listings || [];
+}
+
 async function DB_incrementViews(id) {
   await apiCall(`/listings/view/${id}`, 'POST');
 }

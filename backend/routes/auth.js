@@ -71,7 +71,7 @@ router.post('/login-user', async (req, res) => {
 
 // Register Broker
 router.post('/register-broker', async (req, res) => {
-  const { name, email, phone, password, licenseNumber, city, bio } = req.body;
+  const { name, email, phone, password, licenseNumber, city, bio, avatar } = req.body;
   try {
     // Check if email already registered as broker
     const existingBroker = await prisma.broker.findUnique({
@@ -92,6 +92,7 @@ router.post('/register-broker', async (req, res) => {
         licenseNumber: licenseNumber || '',
         city: city || '',
         bio: bio || '',
+        avatar: avatar || null,
         status: 'pending' // starts in pending verification state
       }
     });

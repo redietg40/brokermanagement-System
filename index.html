@@ -65,11 +65,28 @@
         </div>
         <nav class="nav-menu" id="navMenu">
           <a href="index.html#home" class="nav-link active">Home</a>
-          <a href="real-estate.html" class="nav-link">Real Estate</a>
           <a href="browse.html" class="nav-link">Browse</a>
           <a href="index.html#services" class="nav-link">Services</a>
           <a href="index.html#about" class="nav-link">About</a>
-          <a href="categories.html" class="nav-link">Categories</a>
+          <div class="nav-dropdown" id="categoriesDropdown">
+            <a href="categories.html" class="nav-link dropdown-toggle" onclick="toggleCategoriesDropdown(event)">
+              Categories <i class="fas fa-chevron-down" style="font-size:0.75em;"></i>
+            </a>
+            <div class="dropdown-menu" id="categoriesMenu">
+              <a href="categories.html?cat=real-estate" class="dropdown-item"><i class="fas fa-home"></i> Real Estate</a>
+              <a href="categories.html?cat=automotive" class="dropdown-item"><i class="fas fa-car"></i> Automotive</a>
+              <a href="categories.html?cat=electronics" class="dropdown-item"><i class="fas fa-laptop"></i> Electronics</a>
+              <a href="categories.html?cat=fashion" class="dropdown-item"><i class="fas fa-tshirt"></i> Fashion</a>
+              <a href="categories.html?cat=food" class="dropdown-item"><i class="fas fa-utensils"></i> Food & Beverage</a>
+              <a href="categories.html?cat=agriculture" class="dropdown-item"><i class="fas fa-seedling"></i> Agriculture</a>
+              <a href="categories.html?cat=services" class="dropdown-item"><i class="fas fa-tools"></i> Services</a>
+              <a href="categories.html?cat=health" class="dropdown-item"><i class="fas fa-heart"></i> Health & Beauty</a>
+              <a href="categories.html?cat=sports" class="dropdown-item"><i class="fas fa-football-ball"></i> Sports & Recreation</a>
+              <a href="categories.html?cat=education" class="dropdown-item"><i class="fas fa-graduation-cap"></i> Education</a>
+              <a href="categories.html?cat=travel" class="dropdown-item"><i class="fas fa-plane"></i> Travel & Tourism</a>
+              <a href="categories.html?cat=construction" class="dropdown-item"><i class="fas fa-hard-hat"></i> Construction</a>
+            </div>
+          </div>
         </nav>
         <div class="nav-buttons">
           <button class="btn btn-outline" onclick="showLoginModal()">
@@ -634,5 +651,25 @@
 
     <script src="db.js"></script>
     <script src="script.js"></script>
+    <script>
+      function toggleCategoriesDropdown(e) {
+        // Allow navigation to categories.html if clicking the link itself
+        const menu = document.getElementById('categoriesMenu');
+        if (menu.classList.contains('open')) {
+          // If already open, let the link navigate
+          return true;
+        }
+        e.preventDefault();
+        menu.classList.toggle('open');
+      }
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('categoriesDropdown');
+        if (dropdown && !dropdown.contains(e.target)) {
+          const menu = document.getElementById('categoriesMenu');
+          if (menu) menu.classList.remove('open');
+        }
+      });
+    </script>
   </body>
 </html>

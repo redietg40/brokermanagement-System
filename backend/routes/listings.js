@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
     const listings = await prisma.listing.findMany({
       where: {
         active: true,
+        listingStatus: 'approved',
         broker: {
           status: 'approved'
         }
@@ -25,13 +26,36 @@ router.get('/', async (req, res) => {
     // Adapt to local structure
     const formattedListings = listings.map(l => ({
       ...l,
-      brokerName: l.broker.name
+      brokerName: l.broker.name,
+      image: (l.images && l.images.length > 0) ? l.images[0] : 'images/villa2.jpg',
+      broker: {
+        name: l.broker.name,
+        avatar: l.broker.avatar || 'images/broker-image-removebg-preview.png',
+        rating: l.broker.rating || 4.8,
+        experience: 'Verified Broker',
+        verified: true
+      }
     }));
 
     res.json({ success: true, listings: formattedListings });
   } catch (error) {
     console.error('Error fetching approved listings:', error);
     res.status(500).json({ success: false, message: 'Server error fetching listings.' });
+  }
+});
+
+// Get Listings by specific Broker (MUST be before /:id route to avoid conflict)
+router.get('/broker/:brokerId', async (req, res) => {
+  const { brokerId } = req.params;
+  try {
+    const listings = await prisma.listing.findMany({
+      where: { brokerId },
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json({ success: true, listings });
+  } catch (error) {
+    console.error('Error fetching broker listings:', error);
+    res.status(500).json({ success: false, message: 'Server error fetching broker listings.' });
   }
 });
 
@@ -74,24 +98,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Get Listings by specific Broker
-router.get('/broker/:brokerId', async (req, res) => {
-  const { brokerId } = req.params;
-  try {
-    const listings = await prisma.listing.findMany({
-      where: { brokerId },
-      orderBy: { createdAt: 'desc' }
-    });
-    res.json({ success: true, listings });
-  } catch (error) {
-    console.error('Error fetching broker listings:', error);
-    res.status(500).json({ success: false, message: 'Server error fetching broker listings.' });
-  }
-});
-
 // Add New Listing (by broker)
 router.post('/add', async (req, res) => {
-  const { brokerId, title, type, location, locationLabel, price, bedrooms, bathrooms, area, description, saleStatus, images } = req.body;
+  const { brokerId, title, category, type, location, locationLabel, price, bedrooms, bathrooms, area, description, saleStatus, images } = req.body;
   try {
     // Verify broker exists
     const broker = await prisma.broker.findUnique({ where: { id: brokerId } });
@@ -103,6 +112,7 @@ router.post('/add', async (req, res) => {
       data: {
         brokerId,
         title,
+        category: category || 'real-estate',
         type,
         location,
         locationLabel,
@@ -113,11 +123,12 @@ router.post('/add', async (req, res) => {
         description,
         saleStatus: saleStatus || 'for-sale',
         images: images || [],
-        active: true
+        active: true,
+        listingStatus: 'pending'  // Requires admin approval before going public
       }
     });
 
-    res.status(201).json({ success: true, listing });
+    res.status(201).json({ success: true, listing, message: 'Listing submitted. Pending admin approval before going live.' });
   } catch (error) {
     console.error('Error creating property listing:', error);
     res.status(500).json({ success: false, message: 'Server error saving property details.' });

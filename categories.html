@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Categories - FindBroker</title>
+    <title>All Categories - FindBroker Marketplace</title>
+    <meta name="description" content="Browse all marketplace categories on FindBroker — Real Estate, Automotive, Electronics, Fashion, Food, Agriculture and more." />
     <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
@@ -13,29 +14,171 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <style>
+      body { padding-top: 100px; }
+
+      .categories-hero {
+        background: linear-gradient(135deg, #1e293b 0%, #2563eb 100%);
+        color: white;
+        padding: 3rem 0 4rem;
+        text-align: center;
+      }
+      .categories-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+      }
+      .categories-hero p {
+        font-size: 1.15rem;
+        opacity: 0.85;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .categories-section {
+        padding: 3.5rem 0 5rem;
+        background: #f8f7ff;
+      }
+
+      .section-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #2563eb;
+        margin-bottom: 0.5rem;
+      }
+
+      .categories-full-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.75rem;
+        margin-top: 2.5rem;
+      }
+
+      .cat-card {
+        background: white;
+        border-radius: 18px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+        transition: transform 0.28s, box-shadow 0.28s;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cat-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 18px;
+        background: var(--card-gradient, linear-gradient(135deg, #eff6ff, #ffffff));
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 0;
+      }
+
+      .cat-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 16px 40px rgba(37,99,235,0.14);
+        border-color: var(--cat-color, #2563eb);
+      }
+
+      .cat-card:hover::before {
+        opacity: 1;
+      }
+
+      .cat-card.highlighted {
+        border-color: var(--cat-color, #2563eb);
+        box-shadow: 0 8px 32px rgba(37,99,235,0.18);
+        transform: scale(1.03);
+      }
+
+      .cat-card > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .cat-icon-ring {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        font-size: 2rem;
+        background: var(--cat-bg, #eff6ff);
+        color: var(--cat-color, #2563eb);
+        transition: transform 0.3s;
+      }
+
+      .cat-card:hover .cat-icon-ring {
+        transform: scale(1.12) rotate(-5deg);
+      }
+
+      .cat-name {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.3rem;
+      }
+
+      .cat-count {
+        font-size: 0.875rem;
+        color: #64748b;
+        margin-bottom: 1rem;
+      }
+
+      .cat-browse-btn {
+        display: inline-block;
+        background: var(--cat-color, #2563eb);
+        color: white;
+        padding: 0.45rem 1.25rem;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: opacity 0.2s, transform 0.2s;
+      }
+
+      .cat-browse-btn:hover {
+        opacity: 0.88;
+        transform: scale(1.05);
+      }
+
+      /* Breadcrumb */
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+      }
+      .breadcrumb a { color: #2563eb; text-decoration: none; }
+      .breadcrumb a:hover { text-decoration: underline; }
+      .breadcrumb i { font-size: 0.7rem; }
+    </style>
   </head>
   <body>
-    <!-- Theme Toggle -->
-    <button
-      class="theme-toggle"
-      onclick="toggleTheme()"
-      aria-label="Toggle dark mode"
-    >
-      <i class="fas fa-moon"></i>
-    </button>
 
     <!-- Header -->
     <header class="header">
       <div class="container">
         <div class="nav-brand">
-          <h1 class="logo">FindBroker</h1>
+          <a href="index.html" class="logo" style="text-decoration:none;">FindBroker</a>
           <span class="logo-tagline">Trusted Connections</span>
         </div>
         <nav class="nav-menu" id="navMenu">
           <a href="index.html" class="nav-link">Home</a>
           <a href="browse.html" class="nav-link">Browse</a>
           <a href="categories.html" class="nav-link active">Categories</a>
-          <a href="reviews.html" class="nav-link">Reviews</a>
+          <a href="index.html#services" class="nav-link">Services</a>
           <a href="about.html" class="nav-link">About</a>
           <div class="nav-buttons">
             <button class="btn btn-outline" onclick="showLoginModal()">
@@ -52,17 +195,29 @@
       </div>
     </header>
 
-    <!-- Categories Section -->
-    <section id="categories" class="categories">
+    <!-- Hero -->
+    <section class="categories-hero">
       <div class="container">
-        <div class="section-header-center">
-          <h2 class="section-title">Browse by Category</h2>
-          <p class="section-subtitle">
-            Discover trusted brokers across all major categories
-          </p>
+        <div class="section-label"><i class="fas fa-th-large"></i> Marketplace</div>
+        <h1>Browse All Categories</h1>
+        <p>From real estate to electronics, fashion to agriculture — find the right broker for everything you need.</p>
+      </div>
+    </section>
+
+    <!-- All Categories -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Categories</span>
         </div>
-        <div class="categories-grid" id="categoriesGrid">
-          <!-- Categories will be populated by JavaScript -->
+
+        <div class="section-label">All Categories</div>
+        <h2 class="section-title" style="text-align:left; font-size:2rem; margin-bottom:0;">12 Categories Available</h2>
+
+        <div class="categories-full-grid" id="categoriesGrid">
+          <!-- Rendered by JS -->
         </div>
       </div>
     </section>
@@ -72,9 +227,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3>Login to FindBroker</h3>
-          <button class="close-btn" onclick="closeModal('loginModal')">
-            &times;
-          </button>
+          <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
         </div>
         <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="form-group">
@@ -85,19 +238,9 @@
             <label for="loginPassword">Password</label>
             <input type="password" id="loginPassword" required />
           </div>
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="rememberMe" />
-              Remember me
-            </label>
-          </div>
           <button type="submit" class="btn btn-primary btn-full">Login</button>
           <div class="form-footer">
-            <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
-            <span
-              >Don't have an account?
-              <a href="#" onclick="switchToRegister()">Register</a></span
-            >
+            <span>Don't have an account? <a href="#" onclick="switchToRegister()">Register</a></span>
           </div>
         </form>
       </div>
@@ -108,9 +251,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3>Register as Broker</h3>
-          <button class="close-btn" onclick="closeModal('registerModal')">
-            &times;
-          </button>
+          <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
         </div>
         <form id="registerForm" onsubmit="handleRegister(event)">
           <div class="form-row">
@@ -143,7 +284,14 @@
               <option value="automotive">Automotive</option>
               <option value="electronics">Electronics</option>
               <option value="fashion">Fashion</option>
+              <option value="food">Food & Beverage</option>
+              <option value="agriculture">Agriculture</option>
               <option value="services">Services</option>
+              <option value="health">Health & Beauty</option>
+              <option value="sports">Sports & Recreation</option>
+              <option value="education">Education</option>
+              <option value="travel">Travel & Tourism</option>
+              <option value="construction">Construction</option>
             </select>
           </div>
           <div class="form-group">
@@ -152,12 +300,7 @@
           </div>
           <div class="form-group">
             <label for="licenseDocument">License Document</label>
-            <input
-              type="file"
-              id="licenseDocument"
-              accept=".pdf,.jpg,.png"
-              required
-            />
+            <input type="file" id="licenseDocument" accept=".pdf,.jpg,.png" required />
           </div>
           <div class="form-group">
             <label for="registerPassword">Password</label>
@@ -166,32 +309,69 @@
           <div class="form-group">
             <label class="checkbox-label">
               <input type="checkbox" id="agreeTerms" required />
-              I agree to the <a href="#terms">Terms of Service</a> and
-              <a href="#privacy">Privacy Policy</a>
+              I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>
             </label>
           </div>
-          <button type="submit" class="btn btn-primary btn-full">
-            Register
-          </button>
+          <button type="submit" class="btn btn-primary btn-full">Register</button>
           <div class="form-footer">
-            <span
-              >Already have an account?
-              <a href="#" onclick="switchToLogin()">Login</a></span
-            >
+            <span>Already have an account? <a href="#" onclick="switchToLogin()">Login</a></span>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Back to Top Button -->
-    <button
-      class="back-to-top"
-      onclick="scrollToTop()"
-      aria-label="Back to top"
-    >
+    <!-- Back to Top -->
+    <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to top">
       <i class="fas fa-arrow-up"></i>
     </button>
 
     <script src="script.js"></script>
+    <script>
+      const ALL_CATEGORIES = [
+        { id: 'real-estate',  name: 'Real Estate',       icon: 'fas fa-home',            count: 245, color: '#2563eb', bg: '#eff6ff' },
+        { id: 'automotive',   name: 'Automotive',         icon: 'fas fa-car',             count: 189, color: '#ef4444', bg: '#fef2f2' },
+        { id: 'electronics',  name: 'Electronics',        icon: 'fas fa-laptop',          count: 334, color: '#8b5cf6', bg: '#f5f3ff' },
+        { id: 'fashion',      name: 'Fashion',            icon: 'fas fa-tshirt',          count: 167, color: '#ec4899', bg: '#fdf2f8' },
+        { id: 'food',         name: 'Food & Beverage',   icon: 'fas fa-utensils',        count: 145, color: '#f59e0b', bg: '#fffbeb' },
+        { id: 'agriculture',  name: 'Agriculture',        icon: 'fas fa-seedling',        count: 198, color: '#22c55e', bg: '#f0fdf4' },
+        { id: 'services',     name: 'Services',           icon: 'fas fa-tools',           count: 223, color: '#10b981', bg: '#ecfdf5' },
+        { id: 'health',       name: 'Health & Beauty',   icon: 'fas fa-heart',           count: 178, color: '#06b6d4', bg: '#ecfeff' },
+        { id: 'sports',       name: 'Sports & Recreation',icon: 'fas fa-football-ball',  count: 156, color: '#84cc16', bg: '#f7fee7' },
+        { id: 'education',    name: 'Education',          icon: 'fas fa-graduation-cap',  count: 89,  color: '#6366f1', bg: '#eef2ff' },
+        { id: 'travel',       name: 'Travel & Tourism',  icon: 'fas fa-plane',           count: 134, color: '#14b8a6', bg: '#f0fdfa' },
+        { id: 'construction', name: 'Construction',       icon: 'fas fa-hard-hat',        count: 167, color: '#f97316', bg: '#fff7ed' },
+      ];
+
+      function renderCategories() {
+        const grid = document.getElementById('categoriesGrid');
+        const params = new URLSearchParams(window.location.search);
+        const highlighted = params.get('cat');
+
+        grid.innerHTML = ALL_CATEGORIES.map(cat => `
+          <a href="browse.html?category=${cat.id}" 
+             class="cat-card ${highlighted === cat.id ? 'highlighted' : ''}"
+             id="cat-${cat.id}"
+             style="--cat-color: ${cat.color}; --cat-bg: ${cat.bg}; --card-gradient: linear-gradient(135deg, ${cat.bg}, #ffffff);"
+          >
+            <div class="cat-icon-ring" style="background:${cat.bg}; color:${cat.color};">
+              <i class="${cat.icon}"></i>
+            </div>
+            <div class="cat-name">${cat.name}</div>
+            <div class="cat-count">${cat.count} listings</div>
+            <span class="cat-browse-btn" style="background:${cat.color};">Browse &rarr;</span>
+          </a>
+        `).join('');
+
+        // Scroll to highlighted category if came from navbar link
+        if (highlighted) {
+          setTimeout(() => {
+            const el = document.getElementById('cat-' + highlighted);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+      }
+
+      renderCategories();
+    </script>
   </body>
 </html>

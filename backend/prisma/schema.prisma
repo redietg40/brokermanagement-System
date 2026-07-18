@@ -46,6 +46,7 @@ model Admin {
 model Listing {
   id            String   @id @default(uuid())
   title         String
+  category      String   @default("real-estate")
   type          String
   location      String
   locationLabel String
@@ -57,6 +58,7 @@ model Listing {
   saleStatus    String   @default("for-sale") // for-sale, for-rent
   images        String[]
   active        Boolean  @default(true)
+  listingStatus String   @default("pending") // pending, approved, rejected
   views         Int      @default(0)
   createdAt     DateTime @default(now())
   brokerId      String

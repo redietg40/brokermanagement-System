@@ -167,6 +167,12 @@
                 <label for="bio">Business Bio / Description</label>
                 <textarea id="bio" rows="3" required placeholder="Describe your experience, specialty, and services..."></textarea>
               </div>
+
+              <div class="form-group" style="margin-top: 1rem;">
+                <label for="avatarInput">Profile Photo / Avatar (Optional)</label>
+                <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(event)" style="padding: 0.5rem;" />
+                <div id="avatarPreviewContainer" style="margin-top: 10px;"></div>
+              </div>
             </div>
             
             <div class="form-group" style="margin-top: 1.5rem;">
@@ -203,6 +209,21 @@
 
     <script src="db.js"></script>
     <script>
+      let avatarBase64 = null;
+
+      function previewAvatar(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          avatarBase64 = evt.target.result;
+          document.getElementById("avatarPreviewContainer").innerHTML = `
+            <img src="${avatarBase64}" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #2563eb;" />
+          `;
+        };
+        reader.readAsDataURL(file);
+      }
+
       async function submitRegistration(event) {
         event.preventDefault();
         
@@ -222,7 +243,7 @@
         }
         
         const name = `${firstName} ${lastName}`;
-        const res = await DB_registerBroker({ name, email, phone, password, licenseNumber, city, bio });
+        const res = await DB_registerBroker({ name, email, phone, password, licenseNumber, city, bio, avatar: avatarBase64 });
         
         if (res.success) {
           document.getElementById("registerFormBox").style.display = "none";

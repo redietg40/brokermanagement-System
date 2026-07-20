@@ -84,7 +84,7 @@ async function initDashboardData() {
 
   try {
     // Fetch stats directly from the dedicated /admin/stats endpoint
-    const statsRes = await fetch("http://localhost:5000/api/admin/stats");
+    const statsRes = await fetch("/api/admin/stats");
     const statsData = await statsRes.json();
 
     if (statsData.success) {
@@ -473,4 +473,25 @@ async function viewListingDetailsAdmin(listingId) {
 function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) modal.classList.remove("active");
+}
+
+function showAdminNotification(message, type = 'info') {
+  let toastContainer = document.getElementById('adminToastContainer');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'adminToastContainer';
+    toastContainer.style.cssText = 'position:fixed; top:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px;';
+    document.body.appendChild(toastContainer);
+  }
+
+  const toast = document.createElement('div');
+  const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+  toast.style.cssText = `background:${bgColor}; color:white; padding:12px 20px; border-radius:6px; font-weight:500; font-size:0.9rem; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:all 0.3s ease;`;
+  toast.textContent = message;
+
+  toastContainer.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
 }

@@ -225,8 +225,13 @@ async function seedDatabase() {
   }
 }
 
-// Start Server
-app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
-  await seedDatabase();
-});
+// Export for Vercel
+module.exports = app;
+
+// Start Server locally
+if (require.main === module) {
+  app.listen(PORT, async () => {
+    console.log(`Server running on port ${PORT}`);
+    await seedDatabase();
+  });
+}

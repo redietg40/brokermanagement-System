@@ -1,6 +1,6 @@
 let app;
 try {
-  app = require('../server');
+  app = require('../backend/server');
 } catch (error) {
   app = (req, res) => {
     res.status(200).json({

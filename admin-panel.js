@@ -155,6 +155,7 @@ function renderPendingTable(pendingBrokers) {
         <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${b.bio || ''}">${b.bio || "No bio description provided."}</td>
         <td>
           <div class="actions-cell">
+            <button class="btn btn-sm btn-outline" onclick="viewBrokerDetailsAdmin('${b.id}')"><i class="fas fa-info-circle"></i> View Profile</button>
             <button class="btn btn-sm btn-success" onclick="approveBrokerAction('${b.id}')"><i class="fas fa-check"></i> Approve</button>
             <button class="btn btn-sm btn-danger" onclick="rejectBrokerAction('${b.id}')"><i class="fas fa-times"></i> Reject</button>
           </div>
@@ -194,6 +195,7 @@ function renderBrokersTable(brokers) {
         <td><span class="status-badge ${b.status}">${b.status}</span></td>
         <td>
           <div class="actions-cell">
+            <button class="btn btn-sm btn-outline" onclick="viewBrokerDetailsAdmin('${b.id}')"><i class="fas fa-info-circle"></i> View Profile</button>
             ${b.status === 'pending' ? `<button class="btn btn-sm btn-success" onclick="approveBrokerAction('${b.id}')"><i class="fas fa-check"></i> Approve</button>` : ''}
             <button class="btn btn-sm btn-danger" onclick="deleteBrokerAction('${b.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
@@ -237,6 +239,7 @@ function renderListingsTable(listings) {
         </td>
         <td>
           <div class="actions-cell">
+            <button class="btn btn-sm btn-outline" onclick="viewListingDetailsAdmin('${l.id}')"><i class="fas fa-eye"></i> View</button>
             ${l.listingStatus !== 'approved' ? `<button class="btn btn-sm btn-success" onclick="approveListingAction('${l.id}')"><i class="fas fa-check"></i> Approve</button>` : ''}
             ${l.listingStatus === 'approved' ? `<button class="btn btn-sm" style="background:#94a3b8;color:#fff;border:none;" onclick="rejectListingAction('${l.id}')"><i class="fas fa-ban"></i> Revoke</button>` : ''}
             ${l.listingStatus === 'pending' ? `<button class="btn btn-sm btn-danger" onclick="rejectListingAction('${l.id}')"><i class="fas fa-times"></i> Reject</button>` : ''}
@@ -346,20 +349,128 @@ async function rejectListingAction(listingId) {
   }
 }
 
-// Notification Drawer Helper
-function showAdminNotification(message, type = "info") {
-  let container = document.getElementById("notification");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "notification";
-    container.className = "notification";
-    document.body.appendChild(container);
+// View Full Broker Profile for Admin Inspection
+async function viewBrokerDetailsAdmin(brokerId) {
+  const broker = await DB_getBrokerById(brokerId);
+  if (!broker) {
+    showAdminNotification("Broker profile not found.", "error");
+    return;
   }
 
-  container.className = `notification notification-${type} active`;
-  container.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+  const content = document.getElementById("brokerDetailContent");
+  if (!content) return;
 
-  setTimeout(() => {
-    container.classList.remove("active");
-  }, 5000);
+  const joinDate = new Date(broker.registeredAt).toLocaleDateString('en-US', { dateStyle: 'long' });
+
+  content.innerHTML = `
+    <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid #e2e8f0;">
+      <div style="width:60px; height:60px; border-radius:50%; background:#2563eb; color:white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:700;">
+        ${broker.name.slice(0,2).toUpperCase()}
+      </div>
+      <div>
+        <h3 style="margin:0 0 0.25rem 0; color:#1e293b;">${broker.name}</h3>
+        <p style="margin:0; color:#64748b; font-size:0.9rem;">${broker.email} · 📞 ${broker.phone || 'N/A'}</p>
+        <span class="status-badge ${broker.status}" style="margin-top:0.4rem; display:inline-block;">${broker.status.toUpperCase()} BROKER</span>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; font-size:0.92rem; color:#334155;">
+      <div style="background:#f8fafc; padding:1rem; border-radius:8px;">
+        <h4 style="margin:0 0 0.75rem 0; color:#2563eb;"><i class="fas fa-certificate"></i> License &amp; Credentials</h4>
+        <p style="margin:0.3rem 0;"><strong>License Code:</strong> ${broker.licenseNumber || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Issuing Authority:</strong> ${broker.licenseAuthority || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Expiry Date:</strong> ${broker.licenseExpiry || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Status:</strong> ${broker.licenseStatus || 'Pending'}</p>
+        ${broker.licenseDoc ? `<p style="margin:0.5rem 0 0 0;"><a href="${broker.licenseDoc}" target="_blank" style="color:#2563eb; font-weight:600;"><i class="fas fa-file-download"></i> View Uploaded Trade License Document</a></p>` : ''}
+      </div>
+
+      <div style="background:#f8fafc; padding:1rem; border-radius:8px;">
+        <h4 style="margin:0 0 0.75rem 0; color:#2563eb;"><i class="fas fa-briefcase"></i> Professional Details</h4>
+        <p style="margin:0.3rem 0;"><strong>Years of Experience:</strong> ${broker.experience || '0-5'} Years</p>
+        <p style="margin:0.3rem 0;"><strong>Specializations:</strong> ${Array.isArray(broker.specializations) ? broker.specializations.join(', ') : 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Languages:</strong> ${Array.isArray(broker.languages) ? broker.languages.join(', ') : 'Amharic, English'}</p>
+        <p style="margin:0.3rem 0;"><strong>Education:</strong> ${broker.educationLevel || "Bachelor's Degree"}</p>
+      </div>
+
+      <div style="background:#f8fafc; padding:1rem; border-radius:8px;">
+        <h4 style="margin:0 0 0.75rem 0; color:#2563eb;"><i class="fas fa-address-book"></i> Contact &amp; Channels</h4>
+        <p style="margin:0.3rem 0;"><strong>Secondary Phone:</strong> ${broker.secondaryPhone || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>WhatsApp:</strong> ${broker.whatsapp || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Telegram:</strong> ${broker.telegram || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Office Address:</strong> ${broker.officeAddress || 'N/A'}</p>
+      </div>
+
+      <div style="background:#f8fafc; padding:1rem; border-radius:8px;">
+        <h4 style="margin:0 0 0.75rem 0; color:#2563eb;"><i class="fas fa-piggy-bank"></i> Banking &amp; Metrics</h4>
+        <p style="margin:0.3rem 0;"><strong>Bank Name:</strong> ${broker.bankName || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Account Number:</strong> ${broker.accountNumber || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Account Holder:</strong> ${broker.accountHolder || 'N/A'}</p>
+        <p style="margin:0.3rem 0;"><strong>Commission Rate:</strong> ${broker.commissionRate || 2.0}%</p>
+        <p style="margin:0.3rem 0;"><strong>Total Sales:</strong> ${broker.totalSales || 0}</p>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem; text-align:right; border-top:1px solid #e2e8f0; padding-top:1rem;">
+      ${broker.status === 'pending' ? `<button class="btn btn-success" onclick="approveBrokerAction('${broker.id}'); closeModal('brokerDetailModal');"><i class="fas fa-check"></i> Approve License</button>` : ''}
+      <button class="btn btn-outline" onclick="closeModal('brokerDetailModal')">Close</button>
+    </div>
+  `;
+
+  document.getElementById("brokerDetailModal").classList.add("active");
+}
+
+// View Full Listing Details for Admin Inspection
+async function viewListingDetailsAdmin(listingId) {
+  const listing = await DB_getListingById(listingId);
+  if (!listing) {
+    showAdminNotification("Listing details not found.", "error");
+    return;
+  }
+
+  const content = document.getElementById("listingDetailContent");
+  if (!content) return;
+
+  const images = (listing.images && listing.images.length > 0) ? listing.images : ['images/villa2.jpg'];
+  const specs = listing.specs || {};
+
+  content.innerHTML = `
+    <div style="margin-bottom:1rem;">
+      <span style="background:#2563eb; color:white; padding:3px 10px; border-radius:12px; font-size:0.8rem; font-weight:600; text-transform:capitalize;">${listing.category}</span>
+      <span style="background:#10b981; color:white; padding:3px 10px; border-radius:12px; font-size:0.8rem; font-weight:600; text-transform:capitalize; margin-left:5px;">${listing.saleStatus || 'for-sale'}</span>
+      <h2 style="margin:0.5rem 0 0.25rem 0; color:#1e293b;">${listing.title}</h2>
+      <p style="color:#2563eb; font-size:1.5rem; font-weight:800; margin:0 0 1rem 0;">${new Intl.NumberFormat('en-ET').format(listing.price)} ETB</p>
+    </div>
+
+    <div style="display:flex; gap:10px; overflow-x:auto; margin-bottom:1.25rem; padding-bottom:5px;">
+      ${images.map(img => `<img src="${img}" style="width:240px; height:160px; object-fit:cover; border-radius:8px; border:1px solid #e2e8f0;" onerror="this.src='images/villa2.jpg';" />`).join('')}
+    </div>
+
+    <div style="background:#f8fafc; padding:1rem; border-radius:8px; margin-bottom:1rem; border:1px solid #e2e8f0;">
+      <h4 style="margin:0 0 0.5rem 0; color:#1e293b;"><i class="fas fa-list"></i> Specifications &amp; Attributes</h4>
+      <pre style="background:#ffffff; padding:0.75rem; border-radius:6px; font-family:monospace; font-size:0.85rem; overflow-x:auto;">${JSON.stringify(specs, null, 2)}</pre>
+    </div>
+
+    <div style="margin-bottom:1.25rem;">
+      <h4 style="margin:0 0 0.5rem 0; color:#1e293b;">Description</h4>
+      <p style="color:#475569; font-size:0.95rem; line-height:1.6; white-space:pre-line;">${listing.description || 'No description'}</p>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #e2e8f0; padding-top:1rem;">
+      <div>
+        <span style="font-size:0.85rem; color:#64748b;">Broker: <strong>${listing.brokerName || 'Broker'}</strong></span>
+      </div>
+      <div style="display:flex; gap:0.5rem;">
+        ${listing.listingStatus !== 'approved' ? `<button class="btn btn-success btn-sm" onclick="approveListingAction('${listing.id}'); closeModal('listingDetailModal');"><i class="fas fa-check"></i> Approve Listing</button>` : ''}
+        ${listing.listingStatus === 'approved' ? `<button class="btn btn-sm" style="background:#94a3b8;color:#fff;" onclick="rejectListingAction('${listing.id}'); closeModal('listingDetailModal');"><i class="fas fa-ban"></i> Revoke</button>` : ''}
+        <button class="btn btn-outline btn-sm" onclick="closeModal('listingDetailModal')">Close</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("listingDetailModal").classList.add("active");
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.classList.remove("active");
 }

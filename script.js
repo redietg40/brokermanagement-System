@@ -408,12 +408,28 @@ function renderListings() {
                     </div>
                     <span class="verified-badge"><i class="fas fa-check"></i> Verified</span>
                 </div>
+
+                <!-- Action Buttons: View Details & Contact Broker -->
+                <div style="display:flex; gap:0.5rem; margin-top:1rem; padding-top:0.75rem; border-top:1px solid #f1f5f9;">
+                  <button type="button" class="btn btn-outline" style="flex:1; padding:0.45rem 0.6rem; font-size:0.85rem;" onclick="event.stopPropagation(); showListingDetails('${listing.id}')">
+                    <i class="fas fa-eye"></i> View Details
+                  </button>
+                  <button type="button" class="btn btn-primary" style="flex:1; padding:0.45rem 0.6rem; font-size:0.85rem;" onclick="event.stopPropagation(); showContactModal('${listing.id}')">
+                    <i class="fas fa-paper-plane"></i> Contact
+                  </button>
+                </div>
             </div>
         </div>
     `;
       }
     )
     .join("");
+}
+
+// Category Normalizer helper
+function normalizeCat(str) {
+  if (!str) return "";
+  return str.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
 // Category Filter & Sorting Helpers for browse.html
@@ -435,22 +451,38 @@ function populateCategoryFilter() {
 
 function filterListings() {
   const catSelect = document.getElementById("categoryFilter");
-  const selectedCat = catSelect ? catSelect.value.toLowerCase() : "";
+  const selectedCat = catSelect ? catSelect.value.trim() : "";
+  const normSelected = normalizeCat(selectedCat);
 
-  if (!selectedCat) {
+  // Update Page Section Header Title if on browse.html
+  const sectionTitleEl = document.querySelector("#browse .section-title");
+  if (sectionTitleEl) {
+    if (selectedCat) {
+      const matchObj = categories.find(c => normalizeCat(c.id) === normSelected || normalizeCat(c.name) === normSelected);
+      const catName = matchObj ? matchObj.name : selectedCat.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      sectionTitleEl.innerText = `${catName} Listings`;
+    } else {
+      sectionTitleEl.innerText = "Browse All Listings";
+    }
+  }
+
+  if (!normSelected) {
     filteredListings = [...listings];
   } else {
     filteredListings = listings.filter(l => {
-      const itemCat = (l.category || l.type || "").toLowerCase();
-      const itemType = (l.type || "").toLowerCase();
-      return itemCat.includes(selectedCat) || selectedCat.includes(itemCat) || itemType.includes(selectedCat);
+      const normCat = normalizeCat(l.category || "");
+      const normType = normalizeCat(l.type || "");
+      return normCat === normSelected || 
+             normCat.includes(normSelected) || 
+             normSelected.includes(normCat) || 
+             normType.includes(normSelected);
     });
   }
   sortListings();
 }
 
 function filterByCategory(catName) {
-  const catObj = categories.find(c => c.name.toLowerCase() === catName.toLowerCase() || c.id.toLowerCase() === catName.toLowerCase());
+  const catObj = categories.find(c => normalizeCat(c.name) === normalizeCat(catName) || normalizeCat(c.id) === normalizeCat(catName));
   const catId = catObj ? catObj.id : catName.toLowerCase();
   
   const select = document.getElementById("categoryFilter");
@@ -482,27 +514,42 @@ function sortListings() {
   renderListings();
 }
 
-// Render Testimonials with proper carousel structure
-function renderTestimonials() {
+// Render Testimonials with API integration and carousel structure
+async function renderTestimonials() {
   const testimonialsSlider = document.getElementById("testimonialsSlider");
   const sliderDots = document.getElementById("sliderDots");
-  if (!testimonialsSlider || !sliderDots) return; // guard: not on every page
+  if (!testimonialsSlider || !sliderDots) return;
 
-  // Create testimonials container with proper flex structure
+  let activeReviews = [...testimonials];
+  try {
+    const liveReviews = await DB_getReviews();
+    if (liveReviews && liveReviews.length > 0) {
+      activeReviews = liveReviews.map(r => ({
+        id: r.id,
+        text: r.text,
+        author: r.author,
+        role: r.role || 'Customer',
+        avatar: r.avatar || 'images/broker-image-removebg-preview.png',
+        rating: r.rating || 5
+      }));
+    }
+  } catch (e) {
+    console.warn("Using default static reviews:", e);
+  }
+
+  // Create testimonials container
   testimonialsSlider.innerHTML = `
     <div class="testimonials-container" id="testimonialsContainer">
-      ${testimonials
+      ${activeReviews
         .map(
           (testimonial) => `
             <div class="testimonial-card">
                 <div class="testimonial-rating">
                     ${"★".repeat(testimonial.rating)}
                 </div>
-                <p class="testimonial-text">${testimonial.text}</p>
+                <p class="testimonial-text">"${testimonial.text}"</p>
                 <div class="testimonial-author">
-                    <img src="${testimonial.avatar}" alt="${
-            testimonial.author
-          }" class="testimonial-avatar" loading="lazy">
+                    <img src="${testimonial.avatar}" alt="${testimonial.author}" class="testimonial-avatar" onerror="this.src='images/broker-image-removebg-preview.png';">
                     <div class="testimonial-info">
                         <h4>${testimonial.author}</h4>
                         <p>${testimonial.role}</p>
@@ -516,7 +563,7 @@ function renderTestimonials() {
   `;
 
   // Create navigation dots
-  sliderDots.innerHTML = testimonials
+  sliderDots.innerHTML = activeReviews
     .map(
       (_, index) => `
         <button class="slider-dot ${
@@ -528,8 +575,29 @@ function renderTestimonials() {
     )
     .join("");
 
-  // Setup auto-slide functionality
   setupTestimonialAutoSlide();
+}
+
+function showAddReviewModal() {
+  const modal = document.getElementById("addReviewModal");
+  if (modal) modal.classList.add("active");
+}
+
+async function handleReviewSubmit(e) {
+  e.preventDefault();
+  const author = document.getElementById("revAuthor").value.trim();
+  const role = document.getElementById("revRole").value.trim();
+  const rating = parseInt(document.getElementById("revRating").value) || 5;
+  const text = document.getElementById("revText").value.trim();
+
+  const success = await DB_addReview({ author, role, rating, text });
+  if (success) {
+    alert("Thank you! Your review has been posted successfully.");
+    closeModal("addReviewModal");
+    renderTestimonials();
+  } else {
+    alert("Failed to submit review. Please try again.");
+  }
 }
 
 function nextTestimonial() {
@@ -595,6 +663,7 @@ function setView(view) {
 function setupSearchSuggestions() {
   const searchInput = document.getElementById("searchInput");
   const suggestionsContainer = document.getElementById("searchSuggestions");
+  if (!searchInput || !suggestionsContainer) return;
 
   // Create search suggestions from listings and categories
   searchSuggestions = [
@@ -834,135 +903,170 @@ function handleNewsletter(event) {
   }, 1500);
 }
 
-// Enhanced Listing Details Modal
+// Ensure Listing Details Modal exists on the page
+function ensureListingModalExists() {
+  let modal = document.getElementById("listingModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "listingModal";
+    modal.className = "modal modal-large";
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+          <h3 id="listingTitle">Listing Details</h3>
+          <button class="close-btn" onclick="closeModal('listingModal')">&times;</button>
+        </div>
+        <div id="listingDetails"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+}
+
+// Enhanced Listing Details Modal with specs formatting
 function showListingDetails(listingId) {
-  const listing = listings.find((l) => l.id === listingId);
+  const listing = listings.find((l) => String(l.id) === String(listingId));
   if (!listing) return;
 
-  // Increment view count
-  listing.views += 1;
+  ensureListingModalExists();
 
+  // Increment view count
+  listing.views = (listing.views || 0) + 1;
   currentListingId = listingId;
-  document.getElementById("listingTitle").textContent = listing.title;
+
+  const titleEl = document.getElementById("listingTitle");
+  if (titleEl) titleEl.textContent = listing.title;
+
+  const firstImg = (listing.images && listing.images.length > 0) ? listing.images[0] : (listing.image || 'images/villa2.jpg');
+  const allImages = (listing.images && listing.images.length > 0) ? listing.images : [firstImg];
+  const bName = listing.brokerName || (listing.broker && listing.broker.name) || 'Verified Broker';
+  const bAvatar = (listing.broker && listing.broker.avatar) || 'images/broker-image-removebg-preview.png';
+  const bRating = (listing.broker && listing.broker.rating) || 4.8;
+  const bExp = (listing.broker && listing.broker.experience) || 'Verified Broker';
+  const cat = listing.category || listing.type || 'Real Estate';
+  const loc = listing.locationLabel || listing.location || 'Ethiopia';
+  const specs = listing.specs || {};
+
+  // Build Category Specs HTML
+  let specsHTML = '';
+  if (specs.year || specs.mileage || specs.fuelType || specs.transmission) {
+    // Automotive
+    specsHTML = `
+      <div style="background:#f8fafc; padding:1rem; border-radius:10px; margin-bottom:1rem; border:1px solid #e2e8f0;">
+        <h4 style="margin:0 0 0.5rem 0; color:#1e293b;"><i class="fas fa-car" style="color:#ef4444;"></i> Vehicle Specifications</h4>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:0.5rem; font-size:0.9rem;">
+          <div><strong>Year:</strong> ${specs.year || 'N/A'}</div>
+          <div><strong>Mileage:</strong> ${specs.mileage ? specs.mileage + ' km' : 'N/A'}</div>
+          <div><strong>Fuel Type:</strong> ${specs.fuelType || 'N/A'}</div>
+          <div><strong>Transmission:</strong> ${specs.transmission || 'N/A'}</div>
+          <div><strong>Condition:</strong> ${specs.condition || 'N/A'}</div>
+          <div><strong>Engine:</strong> ${specs.engineSize || 'N/A'}</div>
+          <div><strong>Color:</strong> ${specs.color || 'N/A'}</div>
+        </div>
+      </div>
+    `;
+  } else if (specs.brand || specs.model || specs.storage || specs.ram) {
+    // Electronics
+    specsHTML = `
+      <div style="background:#f8fafc; padding:1rem; border-radius:10px; margin-bottom:1rem; border:1px solid #e2e8f0;">
+        <h4 style="margin:0 0 0.5rem 0; color:#1e293b;"><i class="fas fa-laptop" style="color:#8b5cf6;"></i> Device Specifications</h4>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:0.5rem; font-size:0.9rem;">
+          <div><strong>Brand:</strong> ${specs.brand || 'N/A'}</div>
+          <div><strong>Model:</strong> ${specs.model || 'N/A'}</div>
+          <div><strong>Storage:</strong> ${specs.storage || 'N/A'}</div>
+          <div><strong>RAM:</strong> ${specs.ram || 'N/A'}</div>
+          <div><strong>Processor:</strong> ${specs.processor || 'N/A'}</div>
+          <div><strong>Condition:</strong> ${specs.condition || 'N/A'}</div>
+        </div>
+      </div>
+    `;
+  } else if (specs.size || specs.material || specs.gender) {
+    // Fashion
+    specsHTML = `
+      <div style="background:#f8fafc; padding:1rem; border-radius:10px; margin-bottom:1rem; border:1px solid #e2e8f0;">
+        <h4 style="margin:0 0 0.5rem 0; color:#1e293b;"><i class="fas fa-tshirt" style="color:#ec4899;"></i> Product Specifications</h4>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:0.5rem; font-size:0.9rem;">
+          <div><strong>Brand:</strong> ${specs.brand || 'N/A'}</div>
+          <div><strong>Size:</strong> ${specs.size || 'N/A'}</div>
+          <div><strong>Material:</strong> ${specs.material || 'N/A'}</div>
+          <div><strong>Gender:</strong> ${specs.gender || 'N/A'}</div>
+          <div><strong>Condition:</strong> ${specs.condition || 'N/A'}</div>
+        </div>
+      </div>
+    `;
+  } else if (listing.bedrooms || listing.bathrooms || listing.area || specs.area) {
+    // Real Estate
+    specsHTML = `
+      <div style="background:#f8fafc; padding:1rem; border-radius:10px; margin-bottom:1rem; border:1px solid #e2e8f0;">
+        <h4 style="margin:0 0 0.5rem 0; color:#1e293b;"><i class="fas fa-home" style="color:#2563eb;"></i> Property Specifications</h4>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem; font-size:0.9rem;">
+          <div><strong>Area:</strong> ${listing.area || specs.area || 0} m²</div>
+          <div><strong>Bedrooms:</strong> ${listing.bedrooms || specs.bedrooms || 0}</div>
+          <div><strong>Bathrooms:</strong> ${listing.bathrooms || specs.bathrooms || 0}</div>
+        </div>
+      </div>
+    `;
+  }
 
   const detailsHTML = `
-        <div style="padding: 2rem;">
-            <div class="listing-image-gallery">
-                <img src="${listing.image}" alt="${
-    listing.title
-  }" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 2rem;">
+        <div style="padding: 1.5rem;">
+            <div class="listing-image-gallery" style="display:flex; gap:10px; overflow-x:auto; margin-bottom:1.5rem; padding-bottom:5px;">
+                ${allImages.map(img => `<img src="${img}" style="width:280px; height:200px; object-fit:cover; border-radius:10px; border:1px solid #e2e8f0;" onerror="this.src='images/villa2.jpg';" />`).join('')}
             </div>
             
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem;">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
                 <div class="listing-main-info">
-                    <div class="listing-badges" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                        <span style="background: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
-                            ${listing.category}
+                    <div class="listing-badges" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <span style="background: #2563eb; color: white; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-transform:capitalize;">
+                            ${cat}
                         </span>
-                        ${
-                          listing.featured
-                            ? '<span style="background: var(--warning-color); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;"><i class="fas fa-star"></i> Featured</span>'
-                            : ""
-                        }
+                        <span style="background: #10b981; color: white; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-transform:capitalize;">
+                            ${listing.saleStatus || 'For Sale'}
+                        </span>
                     </div>
                     
-                    <h2 style="font-size: 2.2rem; margin-bottom: 1rem; color: var(--text-primary); font-weight: 700;">${
-                      listing.title
-                    }</h2>
+                    <h2 style="font-size: 1.75rem; margin-bottom: 0.75rem; color: #1e293b; font-weight: 700;">${listing.title}</h2>
                     
-                    <div class="listing-price-location" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding: 1.25rem; background: #f8fafc; border-radius: 12px; border:1px solid #e2e8f0;">
                         <div>
-                            <span style="font-size: 2rem; font-weight: 800; color: var(--primary-color);">${formatPrice(
-                              listing.price
-                            )} ETB</span>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #2563eb;">${formatPrice(listing.price)} ETB</span>
                         </div>
                         <div style="text-align: right;">
-                            <div style="color: var(--text-secondary); margin-bottom: 0.5rem;">
-                                <i class="fas fa-map-marker-alt"></i> ${
-                                  listing.location
-                                }
+                            <div style="color: #64748b; margin-bottom: 0.25rem; font-size:0.9rem;">
+                                <i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> ${loc}
                             </div>
-                            <div style="color: var(--text-tertiary); font-size: 0.9rem;">
-                                <i class="fas fa-eye"></i> ${
-                                  listing.views
-                                } views
+                            <div style="color: #94a3b8; font-size: 0.85rem;">
+                                <i class="fas fa-eye"></i> ${listing.views} views
                             </div>
                         </div>
                     </div>
                     
-                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 2rem; font-size: 1.1rem;">${
-                      listing.description
-                    }</p>
-                    
-                    <div class="listing-features" style="background: var(--bg-tertiary); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-                        <h4 style="margin-bottom: 1.5rem; color: var(--text-primary);">Key Features</h4>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
-                                <span>Verified Listing</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fas fa-shield-alt" style="color: var(--success-color);"></i>
-                                <span>Secure Transaction</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fas fa-headset" style="color: var(--success-color);"></i>
-                                <span>24/7 Support</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fas fa-calendar" style="color: var(--success-color);"></i>
-                                <span>Posted ${formatDate(listing.date)}</span>
-                            </div>
-                        </div>
-                    </div>
+                    ${specsHTML}
+
+                    <h4 style="margin-bottom: 0.5rem; color: #1e293b;">Description</h4>
+                    <p style="color: #475569; line-height: 1.6; margin-bottom: 1.5rem; font-size: 1rem; white-space:pre-line;">${listing.description || ''}</p>
                 </div>
                 
                 <div class="broker-contact-card">
-                    <div style="background: var(--bg-primary); border: 2px solid var(--border-color); border-radius: 16px; padding: 2rem; position: sticky; top: 2rem;">
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <img src="${listing.broker.avatar}" alt="${
-    listing.broker.name
-  }" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 3px solid var(--border-color);">
-                            <h4 style="margin-bottom: 0.5rem; font-size: 1.3rem; color: var(--text-primary);">${
-                              listing.broker.name
-                            }</h4>
-                            <div style="color: var(--warning-color); margin-bottom: 0.5rem; font-size: 1.1rem;">
-                                ${"★".repeat(
-                                  Math.floor(listing.broker.rating)
-                                )} ${listing.broker.rating}
-                            </div>
-                            <div style="color: var(--text-secondary); margin-bottom: 1rem;">${
-                              listing.broker.experience
-                            } experience</div>
-                            ${
-                              listing.broker.verified
-                                ? '<span style="background: var(--success-color); color: white; font-size: 0.8rem; padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: 600;"><i class="fas fa-check"></i> Verified Broker</span>'
-                                : ""
-                            }
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; text-align:center;">
+                        <img src="${bAvatar}" alt="${bName}" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 0.75rem; border: 2px solid #2563eb;" onerror="this.src='images/broker-image-removebg-preview.png';">
+                        <h4 style="margin-bottom: 0.25rem; font-size: 1.15rem; color: #1e293b;">${bName}</h4>
+                        <div style="color: #f59e0b; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                            ${"★".repeat(Math.floor(bRating))} ${bRating}
                         </div>
+                        <div style="color: #64748b; margin-bottom: 1rem; font-size:0.85rem;">${bExp}</div>
                         
-                        <button class="btn btn-primary btn-full" onclick="showContactModal()" style="margin-bottom: 1rem; font-size: 1.1rem; padding: 1rem;">
-                            <i class="fas fa-envelope"></i> Contact Broker
+                        <button class="btn btn-primary btn-full" onclick="showContactModal('${listing.id}')" style="margin-bottom: 0.75rem; font-size: 0.95rem; padding: 0.75rem;">
+                            <i class="fas fa-paper-plane"></i> Contact Broker
                         </button>
-                        
-                        <button class="btn btn-outline btn-full" onclick="callBroker()" style="margin-bottom: 2rem;">
-                            <i class="fas fa-phone"></i> Call Now
-                        </button>
-                        
-                        <div style="text-align: center; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
-                            <p style="margin-bottom: 0.5rem;"><i class="fas fa-phone"></i> +251-911-123456</p>
-                            <p style="margin-bottom: 1rem;"><i class="fas fa-envelope"></i> broker@findbroker.com</p>
-                            <div style="font-size: 0.85rem; color: var(--text-tertiary);">
-                                <i class="fas fa-info-circle"></i> Response time: Usually within 2 hours
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     `;
 
-  document.getElementById("listingDetails").innerHTML = detailsHTML;
+  const detailsContainer = document.getElementById("listingDetails");
+  if (detailsContainer) detailsContainer.innerHTML = detailsHTML;
   showModal("listingModal");
 }
 
@@ -998,16 +1102,25 @@ function showLoginModal() {
 }
 
 function showRegisterModal() {
-  showModal("registerModal");
+  // Direct to full 5-step broker registration page
+  window.location.href = "broker-register.html";
 }
 
 function switchToRegister() {
   closeModal("loginModal");
-  showModal("registerModal");
+  window.location.href = "broker-register.html";
+}
+
+function toggleBrokerFields() {
+  const typeSelect = document.getElementById("userType");
+  if (typeSelect && typeSelect.value === "broker") {
+    window.location.href = "broker-register.html";
+  }
 }
 
 function switchToLogin() {
-  closeModal("registerModal");
+  const modal = document.getElementById("registerModal");
+  if (modal) closeModal("registerModal");
   showModal("loginModal");
 }
 
@@ -1549,4 +1662,11 @@ async function renderMovingImages() {
       </div>
     `;
   }).join("");
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById("navMenu");
+  if (menu) {
+    menu.classList.toggle("active");
+  }
 }

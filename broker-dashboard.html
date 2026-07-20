@@ -165,92 +165,72 @@
               </div>
 
               <div class="form-group">
-                <label for="listingCategory">Category</label>
-                <select id="listingCategory" required onchange="updateListingTypeOptions()">
+                <label for="listingCategory">Category *</label>
+                <select id="listingCategory" required onchange="onListingCategoryChange()">
                   <option value="real-estate">🏠 Real Estate</option>
                   <option value="automotive">🚗 Automotive</option>
                   <option value="electronics">💻 Electronics</option>
                   <option value="fashion">👗 Fashion</option>
-                  <option value="food">🍽️ Food & Beverage</option>
+                  <option value="food">🍽️ Food &amp; Beverage</option>
+                  <option value="health">❤️ Health &amp; Beauty</option>
                   <option value="agriculture">🌱 Agriculture</option>
                   <option value="services">🔧 Services</option>
-                  <option value="health">❤️ Health & Beauty</option>
-                  <option value="sports">⚽ Sports & Recreation</option>
+                  <option value="sports">⚽ Sports &amp; Recreation</option>
                   <option value="education">🎓 Education</option>
-                  <option value="travel">✈️ Travel & Tourism</option>
+                  <option value="travel">✈️ Travel &amp; Tourism</option>
                   <option value="construction">🏗️ Construction</option>
                 </select>
               </div>
               
               <div class="form-row">
                 <div class="form-group">
-                  <label for="listingType">Listing Type / Sub-Category</label>
-                  <select id="listingType" required>
-                    <option value="villa">Villa</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="house">House</option>
-                    <option value="commercial">Commercial</option>
-                    <option value="land">Land</option>
-                  </select>
+                  <label for="listingType">Listing Type / Sub-Category *</label>
+                  <select id="listingType" required></select>
                 </div>
                 
                 <div class="form-group">
-                  <label for="listingSaleStatus">Listing Status</label>
-                  <select id="listingSaleStatus" required>
-                    <option value="for-sale">For Sale</option>
-                    <option value="for-rent">For Rent</option>
-                  </select>
+                  <label for="listingSaleStatus">Listing Status *</label>
+                  <select id="listingSaleStatus" required></select>
                 </div>
               </div>
               
               <div class="form-row">
                 <div class="form-group">
-                  <label for="listingLocation">Region / Location</label>
+                  <label for="listingLocation">Region / Location *</label>
                   <select id="listingLocation" required>
                     <option value="addis-ababa">Addis Ababa</option>
                     <option value="bahir-dar">Bahir Dar</option>
                     <option value="hawassa">Hawassa</option>
                     <option value="mekelle">Mekelle</option>
+                    <option value="dire-dawa">Dire Dawa</option>
+                    <option value="gondar">Gondar</option>
+                    <option value="jimma">Jimma</option>
                   </select>
                 </div>
                 
                 <div class="form-group">
-                  <label for="listingLocationLabel">Detailed Address / Neighborhood</label>
-                  <input type="text" id="listingLocationLabel" required placeholder="e.g. Bole Atlas, Addis Ababa" />
-                </div>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="listingPrice">Price (ETB)</label>
-                  <input type="number" id="listingPrice" required placeholder="e.g. 25000000" />
-                </div>
-                
-                <div class="form-group">
-                  <label for="listingArea">Size / Area (m² or units)</label>
-                  <input type="number" id="listingArea" required placeholder="e.g. 350" />
-                </div>
-              </div>
-              
-              <div class="form-row spec-inputs">
-                <div class="form-group">
-                  <label for="listingBedrooms">Bedrooms</label>
-                  <input type="number" id="listingBedrooms" value="0" placeholder="0" />
-                </div>
-                
-                <div class="form-group">
-                  <label for="listingBathrooms">Bathrooms</label>
-                  <input type="number" id="listingBathrooms" value="0" placeholder="0" />
+                  <label for="listingLocationLabel">Detailed Address / Neighborhood *</label>
+                  <input type="text" id="listingLocationLabel" required placeholder="e.g. Bole Atlas, Bole Sub-City, Addis Ababa" />
                 </div>
               </div>
               
               <div class="form-group">
-                <label for="listingDescription">Detailed Description</label>
-                <textarea id="listingDescription" rows="5" required placeholder="Describe the listing details, condition, features, and any special highlights..."></textarea>
+                <label for="listingPrice">Price (ETB) *</label>
+                <input type="number" id="listingPrice" required placeholder="e.g. 1500000" />
+              </div>
+
+              <!-- Dynamic Category-Specific Form Fields -->
+              <div id="categorySpecificFields" style="background:#f8fafc; padding:1.25rem; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:1.25rem;">
+                <!-- Populated dynamically by JS based on selected category -->
               </div>
               
               <div class="form-group">
-                <label>Property Images (Upload up to 3 images, JPEG/PNG)</label>
+                <label for="listingDescription">Detailed Description *</label>
+                <textarea id="listingDescription" rows="5" required placeholder="Describe the listing details, condition, specifications, and special highlights..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label>Listing Images (Upload up to 5 images, JPEG/PNG)</label>
                 <div class="image-upload-wrapper">
                   <input type="file" id="listingImages" multiple accept="image/*" onchange="previewImages()" />
                   <div class="image-preview-container" id="imagePreviewContainer">
@@ -267,40 +247,251 @@
           </div>
         </section>
         
-        <!-- Tab Content: Profile Settings -->
+        <!-- Tab Content: Profile Settings with 9 Sub-tabs -->
         <section id="tab-profile" class="tab-panel">
-          <div class="dashboard-card">
-            <h3>Profile Settings</h3>
-            <p style="color:#64748b; margin-bottom:2rem;">Modify your professional broker profile details.</p>
+          <div class="dashboard-card" style="padding: 1.5rem;">
+            <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; color: #1e293b;">Complete Broker Profile Settings</h3>
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">Fill out all 9 categories of credentials required for broker credibility.</p>
             
-            <form id="profileForm" onsubmit="submitProfile(event)">
-              <div class="form-group">
-                <label for="profileName">Full Broker Name</label>
-                <input type="text" id="profileName" required />
-              </div>
+            <!-- Horizontal Sub-tab bar -->
+            <div class="profile-subtabs-wrapper" style="display:flex; gap:0.5rem; overflow-x:auto; margin-bottom:1.5rem; padding-bottom:5px; border-bottom:1px solid #e2e8f0;">
+              <button type="button" class="p-subtab active" onclick="switchProfileSubtab('p-basic', this)">👤 Basic</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-license', this)">📜 License</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-pro', this)">🎓 Expertise</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-contact', this)">📞 Contact &amp; Hours</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-services', this)">🏢 Service Scope</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-metrics', this)">📊 Metrics</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-social', this)">🌐 Online Presence</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-banking', this)">🏦 Banking</button>
+              <button type="button" class="p-subtab" onclick="switchProfileSubtab('p-additional', this)">⚙️ Preferences</button>
+            </div>
+
+            <form id="profileForm" onsubmit="saveFullProfile(event)">
               
-              <div class="form-group">
-                <label for="profilePhone">Contact Phone Number</label>
-                <input type="tel" id="profilePhone" required />
+              <!-- 1. Basic Info -->
+              <div id="p-basic" class="p-panel" style="display:block;">
+                <div class="form-group">
+                  <label for="profileName">Full Broker Name *</label>
+                  <input type="text" id="profileName" required />
+                </div>
+                <div class="form-group">
+                  <label for="profilePhone">Contact Phone Number *</label>
+                  <input type="tel" id="profilePhone" required />
+                </div>
+                <div class="form-group">
+                  <label for="profileCity">City / Operating Hub *</label>
+                  <input type="text" id="profileCity" required />
+                </div>
+                <div class="form-group">
+                  <label for="profileBio">Professional Biography</label>
+                  <textarea id="profileBio" rows="4" placeholder="Describe your experience and dedication..."></textarea>
+                </div>
               </div>
-              
-              <div class="form-group">
-                <label for="profileCity">City / Region of Operation</label>
-                <input type="text" id="profileCity" required />
+
+              <!-- 2. License -->
+              <div id="p-license" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileLicenseNumber">License Number *</label>
+                  <input type="text" id="profileLicenseNumber" required placeholder="e.g. ET-RE-9999" />
+                </div>
+                <div class="form-group">
+                  <label for="profileLicenseAuthority">Issuing Authority</label>
+                  <input type="text" id="profileLicenseAuthority" placeholder="Ministry of Trade" />
+                </div>
+                <div class="form-group">
+                  <label for="profileLicenseExpiry">Expiry Date</label>
+                  <input type="date" id="profileLicenseExpiry" />
+                </div>
+                <div class="form-group">
+                  <label for="profileLicenseStatus">License Status</label>
+                  <select id="profileLicenseStatus">
+                    <option value="Pending">Pending Verification</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Expired">Expired</option>
+                  </select>
+                </div>
               </div>
-              
-              <div class="form-group">
-                <label for="profileSales">Productive Sales Count</label>
-                <input type="number" id="profileSales" min="0" required placeholder="Enter number of completed broker sales" />
-                <small style="color: #64748b; display: block; margin-top: 4px;">Update your total successful property sales displayed to buyers.</small>
+
+              <!-- 3. Professional Details -->
+              <div id="p-pro" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileExperience">Years of Experience</label>
+                  <select id="profileExperience">
+                    <option value="0-5">0-5 Years</option>
+                    <option value="5-10">5-10 Years</option>
+                    <option value="10-15">10-15 Years</option>
+                    <option value="15+">15+ Years</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="profileSpecializations">Specialization Areas (comma-separated)</label>
+                  <input type="text" id="profileSpecializations" placeholder="Residential, Commercial, Luxury Properties" />
+                </div>
+                <div class="form-group">
+                  <label for="profileLanguages">Languages Spoken (comma-separated)</label>
+                  <input type="text" id="profileLanguages" placeholder="Amharic, English, Oromo" />
+                </div>
+                <div class="form-group">
+                  <label for="profileAffiliations">Professional Affiliations / Board Membership</label>
+                  <input type="text" id="profileAffiliations" placeholder="Ethiopian Real Estate Association" />
+                </div>
               </div>
-              
-              <div class="form-group">
-                <label for="profileBio">Professional Bio</label>
-                <textarea id="profileBio" rows="4"></textarea>
+
+              <!-- 4. Contact & Availability -->
+              <div id="p-contact" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileSecondaryPhone">Secondary Phone Number</label>
+                  <input type="tel" id="profileSecondaryPhone" />
+                </div>
+                <div class="form-group">
+                  <label for="profileWhatsapp">WhatsApp Number</label>
+                  <input type="tel" id="profileWhatsapp" />
+                </div>
+                <div class="form-group">
+                  <label for="profileTelegram">Telegram Handle</label>
+                  <input type="text" id="profileTelegram" placeholder="@brokerhandle" />
+                </div>
+                <div class="form-group">
+                  <label for="profileOfficeAddress">Office Address</label>
+                  <input type="text" id="profileOfficeAddress" placeholder="Bole Road, Building A, Suite 3" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="profileHoursWeekdays">Weekdays Hours</label>
+                    <input type="text" id="profileHoursWeekdays" value="8:00 AM - 5:00 PM" />
+                  </div>
+                  <div class="form-group">
+                    <label for="profileHoursWeekends">Weekends Hours</label>
+                    <input type="text" id="profileHoursWeekends" value="9:00 AM - 1:00 PM" />
+                  </div>
+                </div>
+                <div class="form-group checkbox-label">
+                  <input type="checkbox" id="profileAfterHoursAvailable" />
+                  <span>Available for inquiries after hours</span>
+                </div>
+                <div class="form-group">
+                  <label for="profilePreferredContact">Preferred Contact Method</label>
+                  <select id="profilePreferredContact">
+                    <option value="Phone Call">Phone Call</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Telegram">Telegram</option>
+                  </select>
+                </div>
               </div>
-              
-              <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Save Changes</button>
+
+              <!-- 5. Service Scope -->
+              <div id="p-services" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileServiceAreas">Service Areas (comma-separated operating cities)</label>
+                  <input type="text" id="profileServiceAreas" placeholder="Addis Ababa, Hawassa, Adama" />
+                </div>
+                <div class="form-group">
+                  <label for="profilePropertyTypes">Property Types Handled (comma-separated)</label>
+                  <input type="text" id="profilePropertyTypes" placeholder="Villas, Apartments, Office Spaces" />
+                </div>
+                <div class="form-group">
+                  <label for="profileClientTypes">Client Types Served (comma-separated)</label>
+                  <input type="text" id="profileClientTypes" placeholder="Buyers, Sellers, Renters, Investors" />
+                </div>
+                <div class="form-group">
+                  <label for="profileTransactionTypes">Transaction Types (comma-separated)</label>
+                  <input type="text" id="profileTransactionTypes" placeholder="Buying, Selling, Leasing" />
+                </div>
+              </div>
+
+              <!-- 6. Metrics -->
+              <div id="p-metrics" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileTotalSales">Total Successful Sales</label>
+                  <input type="number" id="profileTotalSales" min="0" />
+                </div>
+                <div class="form-group">
+                  <label for="profileTotalClients">Total Clients Served</label>
+                  <input type="number" id="profileTotalClients" min="0" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="profilePropertiesSold">Properties Sold</label>
+                    <input type="number" id="profilePropertiesSold" min="0" />
+                  </div>
+                  <div class="form-group">
+                    <label for="profilePropertiesRented">Properties Rented</label>
+                    <input type="number" id="profilePropertiesRented" min="0" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="profileSuccessRate">Client Satisfaction / Success Rate (%)</label>
+                  <input type="number" id="profileSuccessRate" min="0" max="100" step="0.1" value="95" />
+                </div>
+                <div class="form-group">
+                  <label for="profileResponseTime">Average Response Time</label>
+                  <input type="text" id="profileResponseTime" placeholder="e.g. Under 1 Hour" />
+                </div>
+                <div class="form-group">
+                  <label for="profileEducationLevel">Highest Education Level</label>
+                  <input type="text" id="profileEducationLevel" placeholder="Bachelor's Degree" />
+                </div>
+              </div>
+
+              <!-- 7. Social & Web -->
+              <div id="p-social" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileLinkedin">LinkedIn URL</label>
+                  <input type="url" id="profileLinkedin" placeholder="https://linkedin.com/in/username" />
+                </div>
+                <div class="form-group">
+                  <label for="profileFacebook">Facebook Page URL</label>
+                  <input type="url" id="profileFacebook" />
+                </div>
+                <div class="form-group">
+                  <label for="profileInstagram">Instagram Handle</label>
+                  <input type="text" id="profileInstagram" placeholder="instagram_handle" />
+                </div>
+                <div class="form-group">
+                  <label for="profileWebsite">Website / Portfolio Link</label>
+                  <input type="url" id="profileWebsite" placeholder="https://www.mybrokerwebsite.com" />
+                </div>
+              </div>
+
+              <!-- 8. Banking & Payment -->
+              <div id="p-banking" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileBankName">Bank Name</label>
+                  <input type="text" id="profileBankName" placeholder="Commercial Bank of Ethiopia" />
+                </div>
+                <div class="form-group">
+                  <label for="profileAccountNumber">Account Number</label>
+                  <input type="text" id="profileAccountNumber" />
+                </div>
+                <div class="form-group">
+                  <label for="profileAccountHolder">Account Holder Name</label>
+                  <input type="text" id="profileAccountHolder" />
+                </div>
+                <div class="form-group">
+                  <label for="profileCommissionRate">Average Commission Rate (%)</label>
+                  <input type="number" id="profileCommissionRate" step="0.1" value="2.0" />
+                </div>
+              </div>
+
+              <!-- 9. Additional Info -->
+              <div id="p-additional" class="p-panel" style="display:none;">
+                <div class="form-group">
+                  <label for="profileEmergencyContact">Emergency Contact Info</label>
+                  <input type="text" id="profileEmergencyContact" placeholder="Name - Relationship - Phone" />
+                </div>
+                <div class="form-group">
+                  <label for="profilePreferredLanguage">Preferred Communication Language</label>
+                  <input type="text" id="profilePreferredLanguage" value="Amharic" />
+                </div>
+                <div class="form-group">
+                  <label for="profileTimeZone">Time Zone</label>
+                  <input type="text" id="profileTimeZone" value="East Africa Time (UTC+3)" />
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">
+                <i class="fas fa-save"></i> Save Profile Details
+              </button>
             </form>
           </div>
         </section>

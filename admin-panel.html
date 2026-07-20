@@ -203,6 +203,28 @@
 
     </div>
 
+    <!-- Admin View Broker Details Modal -->
+    <div id="brokerDetailModal" class="modal">
+      <div class="modal-content" style="max-width: 750px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+          <h3>Broker Full Profile Details</h3>
+          <button class="close-btn" onclick="closeModal('brokerDetailModal')">&times;</button>
+        </div>
+        <div id="brokerDetailContent" style="padding: 1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- Admin View Listing Details Modal -->
+    <div id="listingDetailModal" class="modal">
+      <div class="modal-content" style="max-width: 850px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+          <h3>Listing Full Specification &amp; Photos</h3>
+          <button class="close-btn" onclick="closeModal('listingDetailModal')">&times;</button>
+        </div>
+        <div id="listingDetailContent" style="padding: 1.5rem;"></div>
+      </div>
+    </div>
+
     <!-- Notification Alert -->
     <div id="notification" class="notification"></div>
 

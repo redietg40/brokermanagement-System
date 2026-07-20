@@ -55,8 +55,11 @@
             <div class="section-header-center">
                 <h2 class="section-title">Customer Reviews</h2>
                 <p class="section-subtitle">Real experiences from satisfied customers</p>
+                <button class="btn btn-primary" style="margin-top:1rem;" onclick="showAddReviewModal()">
+                    <i class="fas fa-edit"></i> Write a Review
+                </button>
             </div>
-            <div class="testimonials-slider" id="testimonialsSlider">
+            <div class="testimonials-slider" id="testimonialsSlider" style="margin-top:2rem;">
                 <!-- Testimonials container will be populated by JavaScript -->
             </div>
             <div class="slider-controls">
@@ -73,8 +76,40 @@
         </div>
     </section>
 
+    <!-- Write Review Modal -->
+    <div id="addReviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Your Review</h3>
+                <button class="close-btn" onclick="closeModal('addReviewModal')">&times;</button>
+            </div>
+            <form onsubmit="handleReviewSubmit(event)">
+                <div class="form-group">
+                    <label for="revAuthor">Your Full Name</label>
+                    <input type="text" id="revAuthor" required placeholder="e.g. Almaz Tesfaye">
+                </div>
+                <div class="form-group">
+                    <label for="revRole">Your Profession / Role</label>
+                    <input type="text" id="revRole" required placeholder="e.g. Homeowner, Entrepreneur, Client">
+                </div>
+                <div class="form-group">
+                    <label for="revRating">Rating</label>
+                    <select id="revRating" required>
+                        <option value="5">★★★★★ (5/5 Stars)</option>
+                        <option value="4">★★★★☆ (4/5 Stars)</option>
+                        <option value="3">★★★☆☆ (3/5 Stars)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="revText">Your Review Message</label>
+                    <textarea id="revText" rows="4" required placeholder="Share your experience working with brokers on FindBroker..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Post Review</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="db.js"></script>
     <script src="script.js"></script>
-   
-   
 </body>
 </html>

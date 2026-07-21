@@ -2,7 +2,7 @@
 // FindBroker - Backend-connected Database Access Layer (db.js)
 // ============================================================
 
-const API_URL = "";
+const API_URL = "/api";
 
 const DB = {
   KEYS: {

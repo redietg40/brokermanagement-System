@@ -29,6 +29,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'FindBroker REST API is active and running.' });
 });
 
+// Test endpoint for debugging
+app.get('/test', (req, res) => {
+  res.json({ message: 'API test endpoint is working', timestamp: new Date().toISOString() });
+});
+
 // Automatic Database Seeding for Vercel
 async function seedDatabase() {
   try {

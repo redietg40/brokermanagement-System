@@ -19,10 +19,10 @@ const authRoutes = require('../backend/routes/auth');
 const adminRoutes = require('../backend/routes/admin');
 const listingRoutes = require('../backend/routes/listings');
 
-// Use Routes
-app.use('/auth', authRoutes);
-app.use('/admin', adminRoutes);
-app.use('/listings', listingRoutes);
+// Use Routes - include /api prefix since rewrite passes full path
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/listings', listingRoutes);
 
 // Base Route
 app.get('/', (req, res) => {

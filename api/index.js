@@ -1,13 +1,23 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
+const dotenv =require('dotenv');
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
+
+// Prisma client singleton for serverless
+let prisma;
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+  }
+  prisma = global.prisma;
+}
 
 // Middleware
 app.use(cors());

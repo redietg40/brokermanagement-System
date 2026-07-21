@@ -3,7 +3,16 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 
-const prisma = new PrismaClient();
+// Prisma client singleton for serverless
+let prisma;
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prismaAuth) {
+    global.prismaAuth = new PrismaClient();
+  }
+  prisma = global.prismaAuth;
+}
 
 // ==================== BUYER (USER) AUTH ====================
 

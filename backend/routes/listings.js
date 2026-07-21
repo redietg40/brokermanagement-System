@@ -2,7 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
 
-const prisma = new PrismaClient();
+// Prisma client singleton for serverless
+let prisma;
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prismaListings) {
+    global.prismaListings = new PrismaClient();
+  }
+  prisma = global.prismaListings;
+}
 
 // Get Public Approved Listings (Only active listings by verified/approved brokers)
 router.get('/', async (req, res) => {

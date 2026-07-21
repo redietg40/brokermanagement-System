@@ -174,26 +174,36 @@ router.post('/login-broker', async (req, res) => {
 router.post('/login-admin', async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log('Admin login attempt for email:', email);
+    
     const admin = await prisma.admin.findUnique({
       where: { email: email.toLowerCase() }
     });
 
     if (!admin) {
+      console.log('Admin not found for email:', email);
       return res.status(404).json({ success: false, message: 'No administrator account found.' });
     }
 
     const isMatch = await bcrypt.compare(password, admin.passwordHash);
     if (!isMatch) {
+      console.log('Password mismatch for admin:', email);
       return res.status(400).json({ success: false, message: 'Invalid administrative credentials.' });
     }
 
+    console.log('Admin login successful for:', email);
     res.json({
       success: true,
       admin: { name: admin.name, email: admin.email, isAdmin: true }
     });
   } catch (error) {
     console.error('Error logging in administrator:', error);
-    res.status(500).json({ success: false, message: 'Server error during admin login.' });
+    console.error('Error details:', error.message, error.stack);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error during admin login.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 

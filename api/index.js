@@ -37,11 +37,14 @@ app.get('/test', (req, res) => {
 // Automatic Database Seeding for Vercel
 async function seedDatabase() {
   try {
+    console.log('Attempting to connect to database...');
     // Test database connection first
     await prisma.$connect();
     console.log('Database connected successfully');
     
     const adminCount = await prisma.admin.count();
+    console.log('Current admin count:', adminCount);
+    
     if (adminCount === 0) {
       console.log('No administrator found. Seeding default system administrator...');
       const adminPasswordHash = await bcrypt.hash('admin123', 10);
@@ -53,6 +56,8 @@ async function seedDatabase() {
         },
       });
       console.log('System administrator seeded successfully (admin@findbroker.com / admin123).');
+    } else {
+      console.log('Administrator already exists in database.');
     }
 
     const brokerCount = await prisma.broker.count();

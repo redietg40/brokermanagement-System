@@ -32,6 +32,10 @@ app.get('/', (req, res) => {
 // Automatic Database Seeding for Vercel
 async function seedDatabase() {
   try {
+    // Test database connection first
+    await prisma.$connect();
+    console.log('Database connected successfully');
+    
     const adminCount = await prisma.admin.count();
     if (adminCount === 0) {
       console.log('No administrator found. Seeding default system administrator...');
@@ -228,10 +232,25 @@ async function seedDatabase() {
 let seeded = false;
 app.use(async (req, res, next) => {
   if (!seeded) {
-    await seedDatabase();
-    seeded = true;
+    try {
+      await seedDatabase();
+      seeded = true;
+    } catch (error) {
+      console.error('Database seeding error:', error);
+      // Continue even if seeding fails - the database might already have data
+    }
   }
   next();
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('API Error:', err);
+  res.status(500).json({ 
+    success: false, 
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
 module.exports = app;

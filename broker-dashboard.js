@@ -1168,7 +1168,7 @@ function removePreviewImage(index) {
 // Create / Update listing submission
 async function submitListing(event) {
   event.preventDefault();
-  
+
   const editId = document.getElementById("editListingId").value;
   const title = document.getElementById("listingTitle").value.trim();
   const category = document.getElementById("listingCategory").value;
@@ -1177,9 +1177,17 @@ async function submitListing(event) {
   const location = document.getElementById("listingLocation").value;
   const locationLabel = document.getElementById("listingLocationLabel").value.trim();
   const price = Number(document.getElementById("listingPrice").value);
-  const area = Number(document.getElementById("listingArea").value);
-  const bedrooms = Number(document.getElementById("listingBedrooms").value) || 0;
-  const bathrooms = Number(document.getElementById("listingBathrooms").value) || 0;
+  
+  // Handle optional fields that may not exist for all categories
+  const areaElement = document.getElementById("listingArea");
+  const area = areaElement ? Number(areaElement.value) || 0 : 0;
+  
+  const bedroomsElement = document.getElementById("listingBedrooms");
+  const bedrooms = bedroomsElement ? Number(bedroomsElement.value) || 0 : 0;
+  
+  const bathroomsElement = document.getElementById("listingBathrooms");
+  const bathrooms = bathroomsElement ? Number(bathroomsElement.value) || 0 : 0;
+  
   const description = document.getElementById("listingDescription").value.trim();
   
   // Validate images count

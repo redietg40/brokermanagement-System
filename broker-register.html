@@ -142,11 +142,21 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" required placeholder="Minimum 6 characters" />
+                <div style="position: relative;">
+                  <input type="password" id="password" required placeholder="Minimum 6 characters" style="padding-right: 3rem;" />
+                  <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; font-size: 0.9rem;">
+                    <i class="fas fa-eye" id="password-icon"></i>
+                  </button>
+                </div>
               </div>
               <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" required placeholder="Repeat password" />
+                <div style="position: relative;">
+                  <input type="password" id="confirmPassword" required placeholder="Repeat password" style="padding-right: 3rem;" />
+                  <button type="button" onclick="togglePassword('confirmPassword')" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; font-size: 0.9rem;">
+                    <i class="fas fa-eye" id="confirmPassword-icon"></i>
+                  </button>
+                </div>
               </div>
             </div>
             
@@ -210,6 +220,22 @@
     <script src="db.js"></script>
     <script>
       let avatarBase64 = null;
+
+      // Toggle password visibility
+      function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(inputId + '-icon');
+        
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
 
       function previewAvatar(e) {
         const file = e.target.files[0];

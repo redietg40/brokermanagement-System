@@ -120,7 +120,12 @@
               <label for="password" style="margin-bottom: 0;">Password</label>
               <a href="#" style="font-size: 0.8rem; color: #2563eb; text-decoration: none;">Forgot password?</a>
             </div>
-            <input type="password" id="password" required placeholder="Enter password" />
+            <div style="position: relative;">
+              <input type="password" id="password" required placeholder="Enter password" style="padding-right: 3rem;" />
+              <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; font-size: 0.9rem;">
+                <i class="fas fa-eye" id="password-icon"></i>
+              </button>
+            </div>
           </div>
           
           <button type="submit" class="btn btn-primary btn-full" style="padding: 0.8rem; font-size: 1rem; margin-top: 1rem;">
@@ -139,6 +144,22 @@
       // Session redirection guard (if already logged in as approved broker, go to dashboard)
       if (DB_getBrokerSession()) {
         window.location.href = "broker-dashboard.html";
+      }
+
+      // Toggle password visibility
+      function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(inputId + '-icon');
+        
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
       }
 
       async function submitLogin(event) {

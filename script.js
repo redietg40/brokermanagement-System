@@ -469,13 +469,12 @@ function filterListings() {
   if (!normSelected) {
     filteredListings = [...listings];
   } else {
+    // Strict category matching - only show exact category matches
     filteredListings = listings.filter(l => {
       const normCat = normalizeCat(l.category || "");
       const normType = normalizeCat(l.type || "");
-      return normCat === normSelected || 
-             normCat.includes(normSelected) || 
-             normSelected.includes(normCat) || 
-             normType.includes(normSelected);
+      // Exact match only - no partial matches to avoid showing wrong categories
+      return normCat === normSelected || normType === normSelected;
     });
   }
   sortListings();

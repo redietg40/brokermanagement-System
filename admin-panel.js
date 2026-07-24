@@ -2,12 +2,38 @@
 // FindBroker - Administration Panel Controllers (admin-panel.js)
 // ============================================================
 
+// Mobile sidebar toggle function
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('adminSidebar');
+  if (sidebar) {
+    sidebar.classList.toggle('mobile-open');
+  }
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', (e) => {
+  const sidebar = document.getElementById('adminSidebar');
+  const toggleBtn = document.querySelector('.mobile-sidebar-toggle');
+  
+  if (window.innerWidth <= 768 && sidebar && toggleBtn) {
+    if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target) && sidebar.classList.contains('mobile-open')) {
+      sidebar.classList.remove('mobile-open');
+    }
+  }
+});
+
 // Check authentication state on page load
 document.addEventListener("DOMContentLoaded", () => {
   if (DB_isAdminLoggedIn()) {
     showDashboard();
   } else {
     showLogin();
+  }
+  
+  // Show mobile toggle button on mobile
+  const toggleBtn = document.querySelector('.mobile-sidebar-toggle');
+  if (window.innerWidth <= 768 && toggleBtn) {
+    toggleBtn.style.display = 'block';
   }
 });
 

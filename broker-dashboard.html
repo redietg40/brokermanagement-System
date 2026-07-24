@@ -18,10 +18,15 @@
     />
   </head>
   <body>
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-sidebar-toggle" onclick="toggleMobileSidebar()" style="display: none;">
+      <i class="fas fa-bars"></i>
+    </button>
+    
     <div class="dashboard-layout">
       
       <!-- Sidebar Navigation -->
-      <aside class="sidebar">
+      <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
           <div class="logo">FindBroker</div>
           <span class="logo-badge">Broker Space</span>
@@ -133,21 +138,23 @@
               <h3>Manage Your Properties</h3>
               <button class="btn btn-primary" onclick="switchTab('add-listing')"><i class="fas fa-plus"></i> Add Property</button>
             </div>
-            <table class="data-table" id="allListingsTable">
-              <thead>
-                <tr>
-                  <th>Property Details</th>
-                  <th>Type</th>
-                  <th>Location</th>
-                  <th>Price</th>
-                  <th>Visibility</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
+            <div class="data-table-wrapper">
+              <table class="data-table" id="allListingsTable">
+                <thead>
+                  <tr>
+                    <th>Property Details</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Visibility</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
         

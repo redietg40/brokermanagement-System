@@ -166,6 +166,12 @@ body {
   font-size: 1.5rem;
   color: #64748b;
   cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1100;
+}
+
+.mobile-menu-btn:hover {
+  color: #2563eb;
 }
 
 /* Button Styles */
@@ -2842,20 +2848,28 @@ form {
 
   .nav-menu {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 100px;
     left: 0;
     right: 0;
+    bottom: 0;
     background: var(--bg-primary);
     flex-direction: column;
     padding: 2rem;
     box-shadow: var(--shadow-medium);
-    border-radius: 0 0 20px 20px;
-    z-index: 1000;
+    z-index: 999;
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
   }
 
   .nav-menu.active {
     display: flex;
+  }
+
+  .nav-link {
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e2e8f0;
   }
 
   .nav-buttons {
@@ -2864,6 +2878,12 @@ form {
     flex-direction: column;
     width: 100%;
     gap: 1rem;
+  }
+
+  .nav-buttons .btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
   }
 
   .hero-title {

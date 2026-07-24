@@ -18,6 +18,10 @@
     />
   </head>
   <body>
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-sidebar-toggle" onclick="toggleMobileSidebar()" style="display: none;">
+      <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Admin Login Overlay -->
     <div id="adminLoginScreen" class="admin-login-overlay">
@@ -47,7 +51,7 @@
     <div id="adminDashboardLayout" class="admin-layout" style="display: none;">
       
       <!-- Left Sidebar -->
-      <aside class="sidebar">
+      <aside class="sidebar" id="adminSidebar">
         <div class="sidebar-brand">
           <div class="logo">FindBroker</div>
           <span class="logo-badge">Admin Panel</span>
@@ -108,20 +112,22 @@
             <h3>Broker License Verification Requests</h3>
             <p style="color:#64748b; margin-bottom:1.5rem; font-size:0.9rem;">Review broker registration details and verify license authenticity to grant posting access.</p>
             
-            <table class="data-table" id="pendingBrokersTable">
-              <thead>
-                <tr>
-                  <th>Broker Info</th>
-                  <th>License Code</th>
-                  <th>City / Operation</th>
-                  <th>Description / Bio</th>
-                  <th>Action Approval</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
+            <div class="data-table-wrapper">
+              <table class="data-table" id="pendingBrokersTable">
+                <thead>
+                  <tr>
+                    <th>Broker Info</th>
+                    <th>License Code</th>
+                    <th>City / Operation</th>
+                    <th>Description / Bio</th>
+                    <th>Action Approval</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -129,21 +135,23 @@
         <section id="tab-brokers" class="tab-panel" style="margin-top: 2rem;">
           <div class="dashboard-card">
             <h3>Registered Broker Registry</h3>
-            <table class="data-table" id="allBrokersTable">
-              <thead>
-                <tr>
-                  <th>Broker</th>
-                  <th>License Code</th>
-                  <th>City</th>
-                  <th>Registered</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
+            <div class="data-table-wrapper">
+              <table class="data-table" id="allBrokersTable">
+                <thead>
+                  <tr>
+                    <th>Broker</th>
+                    <th>License Code</th>
+                    <th>City</th>
+                    <th>Registered</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -181,21 +189,23 @@
                 </select>
               </div>
             </div>
-            <table class="data-table" id="allListingsTable">
-              <thead>
-                <tr>
-                  <th>Property Details</th>
-                  <th>Broker</th>
-                  <th>Location</th>
-                  <th>Price</th>
-                  <th>Listing Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Populated dynamically -->
-              </tbody>
-            </table>
+            <div class="data-table-wrapper">
+              <table class="data-table" id="allListingsTable">
+                <thead>
+                  <tr>
+                    <th>Property Details</th>
+                    <th>Broker</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Listing Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 

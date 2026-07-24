@@ -5,10 +5,36 @@
 let currentBroker = null;
 let uploadedImagesBase64 = []; // Store base64 strings of uploaded files
 
+// Mobile sidebar toggle function
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    sidebar.classList.toggle('mobile-open');
+  }
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', (e) => {
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.querySelector('.mobile-sidebar-toggle');
+  
+  if (window.innerWidth <= 768 && sidebar && toggleBtn) {
+    if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target) && sidebar.classList.contains('mobile-open')) {
+      sidebar.classList.remove('mobile-open');
+    }
+  }
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
   await checkBrokerAuth();
   if (currentBroker) {
     await initDashboard();
+  }
+  
+  // Show mobile toggle button on mobile
+  const toggleBtn = document.querySelector('.mobile-sidebar-toggle');
+  if (window.innerWidth <= 768 && toggleBtn) {
+    toggleBtn.style.display = 'block';
   }
 });
 

@@ -378,20 +378,173 @@ body {
   .dashboard-layout {
     flex-direction: column;
   }
+  
   .sidebar {
-    position: relative;
+    position: fixed;
     width: 100%;
     height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
   }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-brand {
+    padding: 1.5rem;
+  }
+  
   .sidebar-user {
     padding: 1rem;
   }
+  
   .main-content {
     margin-left: 0;
-    padding: 1.5rem;
+    padding: 1rem;
+    padding-top: 80px;
   }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .stat-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .stat-data h3 {
+    font-size: 1.25rem;
+  }
+  
+  .dashboard-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .card-header h3 {
+    font-size: 1rem;
+  }
+  
+  /* Make tables scrollable on mobile */
+  .data-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+  
+  .data-table {
+    min-width: 600px;
+    font-size: 0.85rem;
+  }
+  
+  .data-table th, .data-table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .data-table th {
+    font-size: 0.75rem;
+  }
+  
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    font-size: 0.85rem;
+  }
+  
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .image-upload-wrapper {
+    padding: 1rem;
+  }
+  
+  .image-preview-container .preview-item {
+    width: 80px;
+    height: 60px;
+  }
+  
+  /* Mobile menu toggle button */
+  .mobile-sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.25rem;
+  }
+  
+  .mobile-sidebar-toggle:hover {
+    background: #1d4ed8;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.75rem;
+    padding-top: 80px;
+  }
+  
+  .dashboard-card {
+    padding: 0.75rem;
+  }
+  
+  .stat-card {
+    padding: 0.75rem;
+  }
+  
+  .data-table {
+    font-size: 0.8rem;
+  }
+  
+  .data-table th, .data-table td {
+    padding: 0.5rem;
+  }
+  
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
   }
 }

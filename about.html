@@ -131,10 +131,20 @@
                 <a href="categories.html" class="nav-link">Categories</a>
                 <a href="reviews.html" class="nav-link">Reviews</a>
                 <a href="about.html" class="nav-link active">About</a>
+                
+                <!-- Auth Buttons in Mobile Menu -->
+                <div class="nav-buttons-mobile">
+                    <button class="btn btn-outline" onclick="showLoginModal()">
+                        Login
+                    </button>
+                    <button class="btn btn-primary" onclick="showRegisterModal()">
+                        Sign Up
+                    </button>
+                </div>
             </nav>
 
-            <!-- Auth Buttons -->
-            <div class="nav-buttons">
+            <!-- Auth Buttons - Desktop Only -->
+            <div class="nav-buttons nav-buttons-desktop">
                 <button class="btn btn-outline" onclick="showLoginModal()">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>

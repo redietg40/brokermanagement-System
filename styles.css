@@ -153,7 +153,8 @@ body {
   color: #2563eb;
 }
 
-.nav-buttons {
+.nav-buttons,
+.nav-buttons-desktop {
   display: flex;
   gap: 1rem;
   margin-left: 2rem;
@@ -1568,30 +1569,47 @@ form {
     font-size: 0.85rem;
   }
 
-  .nav-buttons {
+  /* Desktop nav buttons - hidden on mobile */
+  .nav-buttons-desktop {
+    display: none !important;
     margin-left: 0;
     order: 4;
-    flex: 1 1 100%;
-    display: flex;
+    flex: 0 0 auto;
+    gap: 0.4rem;
+    width: auto;
+  }
+
+  .nav-buttons-desktop .btn {
+    flex: 0 0 auto;
+    min-width: auto;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Mobile nav buttons - inside menu */
+  .nav-buttons-mobile {
+    display: none;
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
-    max-width: 100%;
-    overflow: visible;
     padding: 1.5rem 0;
     border-top: 1px solid #e2e8f0;
     margin-top: 1rem;
   }
 
-  .nav-buttons .btn {
-    flex: 1;
-    min-width: auto;
+  .nav-menu.active .nav-buttons-mobile {
+    display: flex;
+  }
+
+  .nav-buttons-mobile .btn {
     width: 100%;
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
     white-space: normal;
     overflow: visible;
-    text-overflow: clip;
   }
 
   /* Modal Responsive */
@@ -4714,6 +4732,56 @@ form {
 
   .dropdown-item i {
     font-size: 0.8rem;
+  }
+}
+
+/* Desktop View - Show desktop buttons, hide mobile menu elements */
+@media (min-width: 769px) {
+  .nav-buttons-desktop {
+    display: flex !important;
+  }
+
+  .nav-buttons-mobile {
+    display: none !important;
+  }
+
+  .nav-menu {
+    position: static !important;
+    background: transparent !important;
+    flex-direction: row !important;
+    padding: 0 !important;
+    gap: 2rem !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    padding-top: 0 !important;
+  }
+
+  .nav-menu.active::before {
+    display: none !important;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem !important;
+    border-bottom: none !important;
+    font-size: 0.95rem !important;
+    background: transparent !important;
+  }
+
+  .nav-link:hover,
+  .nav-link:active {
+    background: transparent !important;
+    padding-left: 1rem !important;
+  }
+
+  .close-menu-btn {
+    display: none !important;
   }
 }
 

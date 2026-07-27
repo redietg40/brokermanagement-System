@@ -25,11 +25,14 @@
           <div class="logo">FindBroker</div>
           <div class="logo-tagline">Trusted Marketplace</div>
         </div>
-        <!-- Move the search bar here, outside of <section> and before nav-menu -->
-        <div
-          class="search-container"
-          style="flex: 1; max-width: 500px; margin: 0 2rem; height: 100px"
-        >
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Desktop Search Bar -->
+        <div class="search-container">
           <div class="search-box" style="box-shadow: none">
             <div class="search-input-group">
               <i class="fas fa-search search-icon"></i>
@@ -63,6 +66,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Navigation Menu -->
         <nav class="nav-menu" id="navMenu">
           <a href="index.html#home" class="nav-link active">Home</a>
           <a href="browse.html" class="nav-link">Browse</a>
@@ -88,6 +93,8 @@
             </div>
           </div>
         </nav>
+
+        <!-- Auth Buttons -->
         <div class="nav-buttons">
           <button class="btn btn-outline" onclick="showLoginModal()">
             Login
@@ -96,9 +103,6 @@
             Sign Up
           </button>
         </div>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-          <i class="fas fa-bars"></i>
-        </button>
       </div>
     </header>
     <!-- Remove the duplicate search-section below header -->

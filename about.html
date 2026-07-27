@@ -115,24 +115,30 @@
                 <h1 class="logo">FindBroker</h1>
                 <span class="logo-tagline">Trusted Connections</span>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Navigation Menu -->
             <nav class="nav-menu" id="navMenu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="browse.html" class="nav-link">Browse</a>
                 <a href="categories.html" class="nav-link">Categories</a>
                 <a href="reviews.html" class="nav-link">Reviews</a>
                 <a href="about.html" class="nav-link active">About</a>
-                <div class="nav-buttons">
-                    <button class="btn btn-outline" onclick="showLoginModal()">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
-                    <button class="btn btn-primary" onclick="showRegisterModal()">
-                        <i class="fas fa-user-plus"></i> Register as Broker
-                    </button>
-                </div>
             </nav>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
+
+            <!-- Auth Buttons -->
+            <div class="nav-buttons">
+                <button class="btn btn-outline" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn btn-primary" onclick="showRegisterModal()">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
         </div>
     </header>
 

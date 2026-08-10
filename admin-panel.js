@@ -222,6 +222,7 @@ function renderBrokersTable(brokers) {
         <td>
           <div class="actions-cell">
             <button class="btn btn-sm btn-outline" onclick="viewBrokerDetailsAdmin('${b.id}')"><i class="fas fa-info-circle"></i> View Profile</button>
+            <button class="btn btn-sm btn-outline" onclick="viewBrokerListingsAdmin('${b.id}')"><i class="fas fa-home"></i> View Listings</button>
             ${b.status === 'pending' ? `<button class="btn btn-sm btn-success" onclick="approveBrokerAction('${b.id}')"><i class="fas fa-check"></i> Approve</button>` : ''}
             <button class="btn btn-sm btn-danger" onclick="deleteBrokerAction('${b.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
@@ -437,12 +438,29 @@ async function viewBrokerDetailsAdmin(brokerId) {
     </div>
 
     <div style="margin-top:1rem; text-align:right; border-top:1px solid #e2e8f0; padding-top:1rem;">
+      <button class="btn btn-outline" style="margin-right:0.5rem;" onclick="viewBrokerListingsAdmin('${broker.id}')"><i class="fas fa-home"></i> View Listings</button>
       ${broker.status === 'pending' ? `<button class="btn btn-success" onclick="approveBrokerAction('${broker.id}'); closeModal('brokerDetailModal');"><i class="fas fa-check"></i> Approve License</button>` : ''}
       <button class="btn btn-outline" onclick="closeModal('brokerDetailModal')">Close</button>
     </div>
   `;
 
   document.getElementById("brokerDetailModal").classList.add("active");
+}
+
+// Navigate to Listings tab and filter by specific broker
+async function viewBrokerListingsAdmin(brokerId) {
+  const broker = await DB_getBrokerById(brokerId);
+  if (!broker) return;
+  
+  closeModal('brokerDetailModal');
+  switchTab('listings');
+  
+  const searchEl = document.getElementById('adminListingSearch');
+  if (searchEl) {
+    searchEl.value = broker.name;
+  }
+  
+  await filterListingsAdmin();
 }
 
 // View Full Listing Details for Admin Inspection

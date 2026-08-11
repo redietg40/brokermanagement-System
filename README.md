@@ -1,173 +1,131 @@
-FindBroker — Multi-Category Broker Management & Marketplace System
+<div align="center">
 
-[Node.js](https://nodejs.org/) | [Express.js](https://expressjs.com/) | [Prisma](https://www.prisma.io/) | [PostgreSQL](https://www.postgresql.org/) | [MIT License](#license)
+# 🏘️ FindBroker
 
-FindBroker is a full-stack, enterprise-grade broker management platform and multi-category marketplace designed to connect verified brokers with property buyers, car shoppers, and consumers across Ethiopia. The platform features role-based access control, broker license verification, real-time listing approval workflows, category search filters, and customer review management.
+![Node.js](https://img.shields.io/badge/Node.js-18.x-43853D.svg?style=flat&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-4.x-404D59.svg?style=flat)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-316192.svg?style=flat&logo=postgresql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-5.x-3982CE.svg?style=flat&logo=prisma&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
--------------------------------------------------------------------------------
+*A full-stack, enterprise-grade broker management platform and multi-category marketplace for Ethiopia* ✨
 
-Table of Contents
+[🚀 Live Demo](#) • [📖 Documentation](#-features) • [🛠️ Installation](#-quick-start) • [🤝 Contributing](#)
 
-- Key Features
-- Technology Stack
-- Project Structure
-- Getting Started
-- Default Credentials
-- System Screenshots
-- License
+</div>
 
--------------------------------------------------------------------------------
+---
 
-Key Features
+## 🌟 Features
 
-Multi-Role Authentication & Access Control
+### 🔐 **Multi-Role Authentication & Access Control**
+- **System Administrator Console**: Supervise brokers, verify business licenses, review and approve/reject item listings in real-time.
+- **Broker Portal**: Secure dashboard for brokers to register, upload business licenses, create new listings, manage active listings, and track views.
+- **Public Customer Portal**: Browse approved listings, view broker details, filter items by category, and submit interactive star-rated reviews.
 
-- System Administrator Console: Supervise brokers, verify business licenses, review and approve/reject item listings, and monitor platform activity.
-- Broker Portal: Secure dashboard for brokers to register, upload business licenses, create new listings, manage active listings, and track views.
-- Public Customer Portal: Browse approved listings, view broker details, filter items by category, and submit customer reviews.
+### 🛍️ **Multi-Category Marketplace**
+- **Real Estate**: Villas, Apartments, Commercial Spaces, Land
+- **Automotive**: Cars, SUVs, Trucks, Motorbikes
+- **Consumer Goods**: Electronics, Computers, Fashion & Apparel, Food & Beverage
+- **Industry & Services**: Agriculture, Livestock, Health, Education, Construction
 
-Multi-Category Marketplace
+### ⚙️ **Smart Search & Categorization**
+- **Category Normalization**: Query filter matching (e.g., `?category=real-estate`).
+- **Advanced Sorting**: Sort by Newest, Price (Low/High), Name (A-Z), and Broker Rating.
+- **Admin Filters**: Advanced administrative table filters by Category, Listing Status (Pending, Approved, Rejected), and Keyword Search.
 
-Supports diverse marketplace categories with specialized listing criteria:
+### 💬 **Customer Reviews & Testimonials**
+- **Live Feedback**: Submit reviews with an interactive star rating (1-5 Stars).
+- **Responsive Display**: Dynamic carousel for displaying verified client experiences.
 
-- Real Estate (Villas, Apartments, Commercial Spaces, Land)
-- Automotive (Cars, SUV, Trucks, Motorbikes)
-- Electronics & Computers
-- Fashion & Apparel
-- Food & Beverage
-- Agriculture & Livestock
-- Services, Health, Education, Construction, and more
+---
 
-Admin Listing Approval Workflow
+## 🚀 Quick Start
 
-- All new broker listings start in pending status.
-- System Admin can review details and Approve (publish to marketplace) or Reject/Revoke listings in real-time.
-- Advanced administrative table filters by Category, Listing Status (Pending, Approved, Rejected), and Keyword Search.
+### 🔧 **Local Development Setup**
 
-Customer Reviews & Testimonials
+```bash
+# Clone the repository
+git clone https://github.com/redietg40/brokermanagement-System.git
+cd brokermanagement-System
 
-- Live customer review submission with interactive star rating (1-5 Stars), customer role tags, and review comments.
-- Dynamic responsive carousel for displaying client experiences.
+# Setup Backend Environment
+cd backend
+```
 
-Search & Smart Category Normalization
+Create a `.env` file in the `backend` directory:
+```env
+PORT=5000
+DATABASE_URL="postgresql://postgres:password@localhost:5432/brokerdb?schema=public"
+```
 
-- Category query filter matching (browse.html?category=real-estate).
-- Sorting by Newest, Price (Low/High), Name (A-Z), and Broker Rating.
+```bash
+# Install dependencies
+npm install
 
--------------------------------------------------------------------------------
+# Synchronize PostgreSQL Database with Prisma
+npx prisma db push
+npx prisma generate
 
-Technology Stack
+# Start the Backend Server
+npm run dev
+# Server runs on http://localhost:5000
+```
 
-Layer                | Technology
----------------------|-----------------------------------------------------------
-Frontend             | HTML5, Vanilla CSS3, JavaScript (ES6+ Async/Await), FontAwesome 6, Google Fonts
-Backend API          | Node.js, Express.js (RESTful API), CORS
-Database & ORM       | PostgreSQL, Prisma ORM v5
-Authentication       | Passwords hashed with bcryptjs, LocalStorage session handling
-Architecture         | Client-Server Architecture with unified API data layer (db.js)
+### 🌐 **Launch Frontend**
+Open `index.html` in your browser or run it using a local server extension like **VS Code Live Server** (usually runs on `http://127.0.0.1:5501`).
 
--------------------------------------------------------------------------------
+---
 
-Project Structure
+## 🗂️ Project Structure
 
-brokerproject/
-|
-+-- backend/
-|   +-- prisma/
-|   |   +-- schema.prisma        # Prisma Database Schema (User, Broker, Admin, Listing, Review)
-|   +-- routes/
-|   |   +-- admin.js             # Admin authentication & broker/listing verification APIs
-|   |   +-- auth.js              # User & Broker registration/login APIs
-|   |   +-- listings.js          # Listing CRUD & category filtering APIs
-|   |   +-- reviews.js           # Customer review submission & listing APIs
-|   +-- .env                     # Database connection string & environment variables
-|   +-- server.js                # Express app entry point & DB seeder
-|   +-- package.json             # Backend dependencies
-|
-+-- index.html                   # Homepage
-+-- browse.html                  # Public Browse & Category Filter page
-+-- categories.html              # Category overview grid page
-+-- reviews.html                 # Customer Reviews & interactive submission modal
-+-- about.html                   # About & contact page
-+-- admin-panel.html             # System Administrator dashboard UI
-+-- admin-panel.js               # Admin panel state & table controller
-+-- broker-dashboard.html        # Broker listing management UI
-+-- broker-dashboard.js          # Broker dashboard controller
-+-- db.js                        # Unified Frontend-to-Backend API client library
-+-- script.js                    # Global marketplace interactivity & carousel logic
-+-- styles.css                   # Main platform CSS stylesheet
-+-- README.md                    # Project documentation
+```text
+brokermanagement-System/
+├── 📁 backend/
+│   ├── 📁 prisma/
+│   │   └── schema.prisma        # Prisma Database Schema 
+│   ├── 📁 routes/
+│   │   ├── admin.js             # Admin auth & verification APIs
+│   │   ├── auth.js              # User & Broker registration APIs
+│   │   ├── listings.js          # Listing CRUD & filtering APIs
+│   │   └── reviews.js           # Customer review submission APIs
+│   ├── .env                     # Environment variables
+│   ├── server.js                # Express app entry point & DB seeder
+│   └── package.json             # Backend dependencies
+├── 📄 index.html                   # Homepage
+├── 📄 browse.html                  # Public Browse & Category Filter page
+├── 📄 categories.html              # Category overview grid page
+├── 📄 reviews.html                 # Customer Reviews & interactive modal
+├── 📄 admin-panel.html             # System Administrator dashboard UI
+├── 📄 broker-dashboard.html        # Broker listing management UI
+├── 📄 db.js                        # Unified Frontend-to-Backend API client
+├── 📄 script.js                    # Global interactivity & carousel logic
+└── 📄 styles.css                   # Main platform CSS stylesheet
+```
 
--------------------------------------------------------------------------------
+---
 
-Getting Started
+## 🔑 Default Credentials
 
-Prerequisites
+The server automatically seeds default administrator and verified broker credentials on first run:
 
-- Node.js (v18 or higher)
-- PostgreSQL database installed and running locally on port 5432
+| Role | Email | Password | Access URL |
+| --- | --- | --- | --- |
+| 🛡️ **System Admin** | `admin@findbroker.com` | `admin123` | `/admin-panel.html` |
+| 💼 **Verified Broker** | `ahmed@findbroker.com` | `password123` | `/broker-login.html` |
 
-Installation & Setup
+---
 
-1. Clone the Repository
+## 🛠️ Technology Stack
 
-   git clone https://github.com/redietg40/brokermanagement-System.git
-   cd brokermanagement-System
+- **Frontend**: HTML5, Vanilla CSS3, JavaScript (ES6+), FontAwesome 6
+- **Backend**: Node.js, Express.js (RESTful API), CORS
+- **Database**: PostgreSQL, Prisma ORM v5
+- **Security**: bcryptjs password hashing, LocalStorage session handling
 
-2. Setup Backend Environment
+---
 
-   Navigate to the backend folder and create a .env file:
-
-   PORT=5000
-   DATABASE_URL="postgresql://postgres:password@localhost:5432/brokerdb?schema=public"
-
-3. Install Dependencies
-
-   cd backend
-   npm install
-
-4. Synchronize PostgreSQL Database with Prisma
-
-   npx prisma db push
-   npx prisma generate
-
-5. Start the Backend Server
-
-   npm run dev
-   or
-   node server.js
-
-   The server will run on http://localhost:5000 and automatically seed default administrator credentials (admin@findbroker.com / admin123) and initial mock brokers/listings.
-
-6. Launch Frontend
-
-   Open index.html or run using VS Code Live Server (http://127.0.0.1:5501).
-
--------------------------------------------------------------------------------
-
-Default Credentials
-
-Role               | Email                     | Password    | Access URL
--------------------|---------------------------|-------------|------------------------------------------
-System Admin       | admin@findbroker.com      | admin123    | http://127.0.0.1:5501/admin-panel.html
-Verified Broker    | ahmed@findbroker.com      | password123 | http://127.0.0.1:5501/broker-login.html
-
--------------------------------------------------------------------------------
-
-System Screenshots
-
-Page               | Description
--------------------|-----------------------------------------------------------
-Admin Panel        | Approve/Reject broker applications and listing requests
-Browse Marketplace | Multi-category item listings with price and status filters
-Customer Reviews   | Interactive review carousel & submission modal
-
--------------------------------------------------------------------------------
-
-License
-
-This project is licensed under the MIT License.
-
--------------------------------------------------------------------------------
-
-Developed with love for Ethiopia's Brokerage & Marketplace Industry
+<div align="center">
+  <p>Developed with ❤️ for Ethiopia's Brokerage & Marketplace Industry</p>
+  <p>This project is licensed under the <strong>MIT License</strong>.</p>
+</div>
